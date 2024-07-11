@@ -1,0 +1,12 @@
+[package]
+name = "fiamma-sdk-rs"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+cosmrs = { version = "0.17.0", features = ["default", "dev"]}
+tokio = { version = "1", optional = true }
+
+[dev-dependencies]
+cosmrs = { version = "0.17.0", features = ["default", "dev"]}
+tokio = { version = "1" }
