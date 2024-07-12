@@ -4,9 +4,15 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-cosmrs = { version = "0.17.0", features = ["default", "dev"]}
-tokio = { version = "1", optional = true }
+protobuf = "3.5.0"
+tonic = "0.12.0"
+prost = "0.13.1"
+# cosmrs = { version = "0.17.0", features = ["default", "dev"]}
 
 [dev-dependencies]
 cosmrs = { version = "0.17.0", features = ["default", "dev"]}
 tokio = { version = "1" }
+
+[build-dependencies]
+# protobuf-codegen = "3.5.0"
+tonic-build = "0.12.0"
