@@ -131,7 +131,7 @@ mod tests {
     //         public_input: vec![5, 6, 7, 8],
     //         vk: vec![9, 10, 11, 12],
     //     };
-    
+
     //     println!("{:?}", msg);
     // }
 }

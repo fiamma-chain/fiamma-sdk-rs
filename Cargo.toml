@@ -14,5 +14,4 @@ cosmrs = { version = "0.17.0", features = ["default", "dev"]}
 tokio = { version = "1" }
 
 [build-dependencies]
-# protobuf-codegen = "3.5.0"
 tonic-build = "0.12.0"
