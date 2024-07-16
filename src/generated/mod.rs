@@ -1,3 +1,4 @@
+//@Generated code from proto by tonic, do NOT edit!
 pub mod cosmos {
     pub mod base {
         pub mod query {
@@ -8,4 +9,25 @@ pub mod cosmos {
     }
 }
 
-pub mod zkpverify;
+pub mod fiamma {
+    pub mod zkpverify {
+        include!("fiamma.zkpverify.rs");
+    }
+}
+
+use cosmrs::proto::traits::Name;
+
+macro_rules! impl_name {
+    ($type:ty, $package:expr, $name:expr) => {
+        impl Name for $type {
+            const NAME: &'static str = $name;
+            const PACKAGE: &'static str = $package;
+        }
+    };
+}
+
+impl_name!(
+    fiamma::zkpverify::MsgSubmitProof,
+    "fiamma.zkpverify",
+    "MsgSubmitProof"
+);

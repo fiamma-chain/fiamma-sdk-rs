@@ -1,19 +1,10 @@
-pub mod generated;
+#![allow(dead_code)]
 
-#[test]
-fn foo() {
-    use crate::generated::zkpverify::*;
-
-    let msg = MsgSubmitProof {
-        creator: "asd".to_string(),
-        proof_system: "bhbh".to_string(),
-        proof: "1234".as_bytes().to_vec(),
-        public_input: "1234".as_bytes().to_vec(),
-        vk: "1234".as_bytes().to_vec(),
-    };
-
-    println!("{:?}", msg);
-}
+pub mod chain;
+pub(crate) mod generated;
+pub mod query;
+pub mod tx;
+pub mod wallet;
 
 #[cfg(test)]
 mod tests {
@@ -119,19 +110,4 @@ mod tests {
             .build()
             .unwrap()
     }
-
-    // use super::zkpverify::MsgSubmitProof;
-
-    // #[test]
-    // fn proto_test() {
-    //     let msg = MsgSubmitProof {
-    //         creator: "creator_example".to_string(),
-    //         proof_system: "proof_system_example".to_string(),
-    //         proof: vec![1, 2, 3, 4],
-    //         public_input: vec![5, 6, 7, 8],
-    //         vk: vec![9, 10, 11, 12],
-    //     };
-
-    //     println!("{:?}", msg);
-    // }
 }

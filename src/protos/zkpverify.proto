@@ -1,5 +1,5 @@
 syntax = "proto3";
-package zkpverify;
+package fiamma.zkpverify;
 
 // import "params.proto";
 import "amino/amino.proto";
