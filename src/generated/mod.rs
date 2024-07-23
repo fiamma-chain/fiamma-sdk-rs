@@ -13,6 +13,10 @@ pub mod fiamma {
     pub mod zkpverify {
         include!("fiamma.zkpverify.rs");
     }
+
+    pub mod bitvmstaker {
+        include!("fiamma.bitvmstaker.rs");
+    }
 }
 
 use cosmrs::proto::traits::Name;
@@ -30,4 +34,10 @@ impl_name!(
     fiamma::zkpverify::MsgSubmitProof,
     "fiamma.zkpverify",
     "MsgSubmitProof"
+);
+
+impl_name!(
+    fiamma::bitvmstaker::MsgCreateStaker,
+    "fiamma.bitvmstaker",
+    "MsgCreateStaker"
 );

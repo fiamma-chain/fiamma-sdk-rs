@@ -1,7 +1,6 @@
 syntax = "proto3";
 package fiamma.zkpverify;
 
-// import "params.proto";
 import "amino/amino.proto";
 import "cosmos/msg/v1/msg.proto";
 import "cosmos_proto/cosmos.proto";

@@ -18,6 +18,10 @@ pub mod fiamma {
     pub mod zkpverify {
         include!("fiamma.zkpverify.rs");
     }
+
+    pub mod bitvmstaker {
+        include!("fiamma.bitvmstaker.rs");
+    }
 }
 
 use cosmrs::proto::traits::Name;
@@ -35,11 +39,17 @@ impl_name!(
     fiamma::zkpverify::MsgSubmitProof,
     "fiamma.zkpverify",
     "MsgSubmitProof"
+);
+
+impl_name!(
+    fiamma::bitvmstaker::MsgCreateStaker,
+    "fiamma.bitvmstaker",
+    "MsgCreateStaker"
 );"#;
 
     let out_dir = "src/generated";
     tonic_build::configure().out_dir(out_dir).compile(
-        &["src/protos/zkpverify.proto"],
+        &["src/protos/zkpverify.proto", "src/protos/bitvmstaker.proto"],
         &["src/protos", "src/protos/third_party"],
     )?;
     fs::write(PathBuf::from(out_dir).join("mod.rs"), code_string).unwrap();

@@ -4,4 +4,5 @@ pub mod chain;
 pub(crate) mod generated;
 pub mod query;
 pub mod tx;
+pub mod types;
 pub mod wallet;
