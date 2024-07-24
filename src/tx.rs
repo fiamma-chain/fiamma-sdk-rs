@@ -84,7 +84,8 @@ mod tests {
     const TEST_DATA: &str = "test-data";
     const SENDER_PRIVATE_KEY: &str =
         "424a0d5ff7c1c9ce116c2e4cc02f0e6c1beea5507f5828aefa5453b30cae52c1";
-    const NODE: &str = "https://testnet-grpc.fiammachain.io";
+    const NODE: &str = "http://57.180.14.122:9090";
+    // const NODE: &str = "https://testnet-grpc.fiammachain.io";
     // grpcurl -v -d '{"address":"fiamma19fldhw0awjv2ag7dz0lr3d4qmnfkxz69rzxcdp"}' testnet-grpc.fiammachain.io:443 cosmos.auth.v1beta1.Query/Account
     // fiammad query tx --type=hash 31180871FC16A82A892464790C3164EA20DC742DD0A4692F87CD83BAA6AE015B --node tcp://57.180.14.122:26657 --chain-id fiamma-testnet-2
 
