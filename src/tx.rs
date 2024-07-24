@@ -75,17 +75,9 @@ impl TxClient {
 
 #[cfg(test)]
 mod tests {
-    use super::MsgSubmitProof;
-    use crate::{chain::*, tx::TxClient, wallet::Wallet};
-    use cosmos_sdk_proto::cosmos::{
-        auth::v1beta1::{query_client::QueryClient, BaseAccount, QueryAccountRequest},
-        tx::v1beta1::{service_client::ServiceClient, BroadcastMode, BroadcastTxRequest},
-    };
-    use cosmrs::{
-        crypto::secp256k1,
-        tx::{self, Fee, Msg, SignDoc, SignerInfo},
-        AccountId, Coin,
-    };
+    use super::{MsgCreateStaker, MsgSubmitProof};
+    use crate::{tx::TxClient, wallet::Wallet};
+    use cosmrs::AccountId;
     use sha2::{Digest, Sha256};
 
     const BITVM_PROOF_SYSTEM: &str = "GROTH16_BN254_BITVM";
@@ -94,6 +86,7 @@ mod tests {
         "424a0d5ff7c1c9ce116c2e4cc02f0e6c1beea5507f5828aefa5453b30cae52c1";
     const NODE: &str = "https://testnet-grpc.fiammachain.io";
     // grpcurl -v -d '{"address":"fiamma19fldhw0awjv2ag7dz0lr3d4qmnfkxz69rzxcdp"}' testnet-grpc.fiammachain.io:443 cosmos.auth.v1beta1.Query/Account
+    // fiammad query tx --type=hash 31180871FC16A82A892464790C3164EA20DC742DD0A4692F87CD83BAA6AE015B --node tcp://57.180.14.122:26657 --chain-id fiamma-testnet-2
 
     fn proof_artifacts() -> (Vec<u8>, Vec<u8>, Vec<u8>) {
         let location = std::env::current_dir().unwrap().join(TEST_DATA);
@@ -137,7 +130,7 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn test_tx() {
+    async fn test_submit_proof() {
         let wallet = Wallet::new(SENDER_PRIVATE_KEY);
         let gas_limit = 80_000_000_u64;
         let fee = 2000_u128;
@@ -148,54 +141,16 @@ mod tests {
     }
 
     #[tokio::test]
-    async fn test_submit_proof_demo() {
-        let sender_private_key = hex::decode(SENDER_PRIVATE_KEY).unwrap();
-        let sender_private_key = secp256k1::SigningKey::from_slice(&sender_private_key).unwrap();
-        let sender_public_key = sender_private_key.public_key();
-        let sender_account_id = sender_public_key.account_id(ACCOUNT_PREFIX).unwrap();
-
-        let submit_proof_msg = msg_submit_proof(sender_account_id.clone())
-            .to_any()
-            .unwrap();
-
-        let mut client = QueryClient::connect(NODE).await.unwrap();
-        let account_info = client
-            .account(QueryAccountRequest {
-                address: sender_account_id.as_ref().to_string(),
-            })
-            .await;
-
-        let account_info = account_info.unwrap().get_ref().clone().account.unwrap();
-        let account: BaseAccount = account_info
-            .to_msg::<BaseAccount>()
-            .unwrap()
-            .try_into()
-            .unwrap();
-        println!("base_account: {:?}", account);
-
-        let chain_id = CHAIN_ID.parse().unwrap();
-        let sequence_number = account.sequence;
-        let account_number = account.account_number;
-        let gas = 80_000_000u64;
-        let fee = Coin {
-            amount: 2000,
-            denom: DENOM.parse().unwrap(),
+    async fn test_create_staker() {
+        let wallet = Wallet::new(SENDER_PRIVATE_KEY);
+        let gas_limit = 80_000_000_u64;
+        let fee = 2000_u128;
+        let tx_client = TxClient::new(wallet.clone(), NODE.to_string(), fee, gas_limit);
+        let msg = MsgCreateStaker {
+            creator: wallet.account_id.clone(),
+            staker_address: "12345678".to_string(),
         };
-        let fee = Fee::from_amount_and_gas(fee, gas);
-        let tx_body = tx::BodyBuilder::new().msg(submit_proof_msg).finish();
-        let auth_info =
-            SignerInfo::single_direct(Some(sender_public_key), sequence_number).auth_info(fee);
-        let sign_doc = SignDoc::new(&tx_body, &auth_info, &chain_id, account_number).unwrap();
-        let tx_raw = sign_doc.sign(&sender_private_key).unwrap();
-
-        let mut client = ServiceClient::connect(NODE).await.unwrap();
-        let tx_commit_response = client
-            .broadcast_tx(BroadcastTxRequest {
-                tx_bytes: tx_raw.to_bytes().unwrap(),
-                mode: BroadcastMode::Sync as i32,
-            })
-            .await;
-
-        println!("tx_commit_response: {:?}", tx_commit_response);
+        let resp = tx_client.create_staker(msg).await;
+        println!("resp: {:?}", resp);
     }
 }
