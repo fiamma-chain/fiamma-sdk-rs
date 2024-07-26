@@ -89,7 +89,7 @@ mod tests {
     const NODE: &str = "http://57.180.14.122:9090";
     // const NODE: &str = "https://testnet-grpc.fiammachain.io";
     // grpcurl -v -d '{"address":"fiamma19fldhw0awjv2ag7dz0lr3d4qmnfkxz69rzxcdp"}' testnet-grpc.fiammachain.io:443 cosmos.auth.v1beta1.Query/Account
-    // fiammad query tx --type=hash 31180871FC16A82A892464790C3164EA20DC742DD0A4692F87CD83BAA6AE015B --node tcp://57.180.14.122:26657 --chain-id fiamma-testnet-2
+    // fiammad query tx --type=hash 788956C67333066D00A058AA4B3097EF00C3B22780D58F62D2CA3A002C9F4B41 --node tcp://57.180.14.122:26657 --chain-id fiamma-testnet-2
 
     fn proof_artifacts() -> (Vec<u8>, Vec<u8>, Vec<u8>) {
         let location = std::env::current_dir().unwrap().join(TEST_DATA);
@@ -151,7 +151,7 @@ mod tests {
         let tx_client = TxClient::new(SENDER_PRIVATE_KEY, NODE, fee, gas_limit);
         let msg = MsgCreateStaker {
             creator: wallet.account_id.clone(),
-            staker_address: "12345678".to_string(),
+            staker_address: "fiammavaloper19fldhw0awjv2ag7dz0lr3d4qmnfkxz69vukt7x".to_string(),
             staker_register_id: 0,
         };
         let resp = tx_client.create_staker(msg).await;
