@@ -5,6 +5,7 @@ use cosmrs::{tx::Msg, AccountId, ErrorReport, Result};
 pub struct MsgCreateStaker {
     pub creator: AccountId,
     pub staker_address: String,
+    pub staker_register_id: u64,
 }
 
 impl Msg for MsgCreateStaker {
@@ -26,6 +27,7 @@ impl TryFrom<&ProtoMsgCreateStaker> for MsgCreateStaker {
         Ok(MsgCreateStaker {
             creator: proto.creator.parse()?,
             staker_address: proto.staker_address.parse()?,
+            staker_register_id: proto.staker_register_id,
         })
     }
 }
@@ -41,6 +43,7 @@ impl From<&MsgCreateStaker> for ProtoMsgCreateStaker {
         ProtoMsgCreateStaker {
             creator: msg.creator.to_string(),
             staker_address: msg.staker_address.to_string(),
+            staker_register_id: msg.staker_register_id,
         }
     }
 }

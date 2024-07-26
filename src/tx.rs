@@ -14,6 +14,7 @@ use cosmrs::{
 };
 use std::str::FromStr;
 
+#[derive(Debug)]
 pub struct TxClient {
     pub wallet: Wallet,
     pub rpc: String,
@@ -22,10 +23,11 @@ pub struct TxClient {
 }
 
 impl TxClient {
-    pub fn new(wallet: Wallet, rpc: String, fee: u128, gas_limit: u64) -> Self {
+    pub fn new(private_key: &str, rpc: &str, fee: u128, gas_limit: u64) -> Self {
+        let wallet = Wallet::new(private_key);
         Self {
             wallet,
-            rpc,
+            rpc: rpc.to_string(),
             fee,
             gas_limit,
         }
@@ -135,7 +137,7 @@ mod tests {
         let wallet = Wallet::new(SENDER_PRIVATE_KEY);
         let gas_limit = 80_000_000_u64;
         let fee = 2000_u128;
-        let tx_client = TxClient::new(wallet.clone(), NODE.to_string(), fee, gas_limit);
+        let tx_client = TxClient::new(SENDER_PRIVATE_KEY, NODE, fee, gas_limit);
         let submit_proof_msg = msg_submit_proof(wallet.account_id.clone());
         let resp = tx_client.submit_proof(submit_proof_msg).await.unwrap();
         println!("resp: {:?}", resp);
@@ -146,10 +148,11 @@ mod tests {
         let wallet = Wallet::new(SENDER_PRIVATE_KEY);
         let gas_limit = 80_000_000_u64;
         let fee = 2000_u128;
-        let tx_client = TxClient::new(wallet.clone(), NODE.to_string(), fee, gas_limit);
+        let tx_client = TxClient::new(SENDER_PRIVATE_KEY, NODE, fee, gas_limit);
         let msg = MsgCreateStaker {
             creator: wallet.account_id.clone(),
             staker_address: "12345678".to_string(),
+            staker_register_id: 0,
         };
         let resp = tx_client.create_staker(msg).await;
         println!("resp: {:?}", resp);
