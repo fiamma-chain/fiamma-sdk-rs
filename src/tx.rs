@@ -14,7 +14,7 @@ use cosmrs::{
 };
 use std::str::FromStr;
 
-struct TxClient {
+pub struct TxClient {
     pub wallet: Wallet,
     pub rpc: String,
     pub fee: u128,
