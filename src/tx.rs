@@ -10,11 +10,11 @@ use cosmos_sdk_proto::cosmos::tx::v1beta1::{
 };
 use cosmrs::{
     tx::{BodyBuilder, Fee, Msg, Raw, SignDoc, SignerInfo},
-    Any, Coin, Denom, ErrorReport, Result,
+    AccountId, Any, Coin, Denom, ErrorReport, Result,
 };
 use std::str::FromStr;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct TxClient {
     pub wallet: Wallet,
     pub rpc: String,
@@ -31,6 +31,10 @@ impl TxClient {
             fee,
             gas_limit,
         }
+    }
+
+    pub fn account_id(&self) -> AccountId {
+        self.wallet.account_id.clone()
     }
 
     pub async fn submit_proof(&self, msg: MsgSubmitProof) -> Result<BroadcastTxResponse> {
