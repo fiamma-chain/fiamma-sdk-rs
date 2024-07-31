@@ -47,8 +47,6 @@ pub struct MsgCreateStaker {
     pub creator: ::prost::alloc::string::String,
     #[prost(string, tag = "2")]
     pub staker_address: ::prost::alloc::string::String,
-    #[prost(uint64, tag = "3")]
-    pub staker_register_id: u64,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]

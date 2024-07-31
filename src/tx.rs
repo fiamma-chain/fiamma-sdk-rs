@@ -156,7 +156,6 @@ mod tests {
         let msg = MsgCreateStaker {
             creator: wallet.account_id.clone(),
             staker_address: "fiammavaloper19fldhw0awjv2ag7dz0lr3d4qmnfkxz69vukt7x".to_string(),
-            staker_register_id: 0,
         };
         let resp = tx_client.create_staker(msg).await;
         println!("resp: {:?}", resp);
