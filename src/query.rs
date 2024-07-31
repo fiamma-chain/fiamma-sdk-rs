@@ -6,13 +6,14 @@ use crate::generated::fiamma::zkpverify::{
 };
 use cosmrs::{ErrorReport, Result};
 
+#[derive(Debug, Clone)]
 pub struct QueryClient {
     rpc: String,
 }
 
 impl QueryClient {
-    pub fn new(rpc: String) -> Self {
-        Self { rpc }
+    pub fn new(rpc: &str) -> Self {
+        Self { rpc: rpc.to_string() }
     }
 
     pub async fn get_proof_data(&self, proof_id: &str) -> Result<ProofData> {
@@ -54,7 +55,7 @@ mod tests {
     #[tokio::test]
     async fn test_get_proof_data() {
         let proof_id = "00e2af0c74cf8091cf1fd60c672698be7700a5ddfd1d94c21ec06df5bf82da80";
-        let query_client = QueryClient::new(NODE.to_string());
+        let query_client = QueryClient::new(NODE);
         let proof_data = query_client.get_proof_data(proof_id).await;
         println!("proof_data: {:?}", proof_data);
     }
@@ -62,7 +63,7 @@ mod tests {
     #[tokio::test]
     async fn test_get_bitvm_challenge_data() {
         let proof_id = "00e2af0c74cf8091cf1fd60c672698be7700a5ddfd1d94c21ec06df5bf82da80";
-        let query_client = QueryClient::new(NODE.to_string());
+        let query_client = QueryClient::new(NODE);
         let bitvm_challenge_data = query_client.get_bitvm_challenge_data(proof_id).await;
         println!("bitvm_challenge_data: {:?}", bitvm_challenge_data);
     }
