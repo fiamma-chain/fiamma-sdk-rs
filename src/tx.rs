@@ -89,11 +89,11 @@ mod tests {
     const BITVM_PROOF_SYSTEM: &str = "GROTH16_BN254_BITVM";
     const TEST_DATA: &str = "test-data";
     const SENDER_PRIVATE_KEY: &str =
-        "424a0d5ff7c1c9ce116c2e4cc02f0e6c1beea5507f5828aefa5453b30cae52c1";
-    const NODE: &str = "http://57.180.14.122:9090";
+        "7ae58f95b0f15c999f77488fa0fbebbd4acbe2d12948dcd1729b07ee8f3051e8";
+    const NODE: &str = "http://13.231.104.23:9090";
     // const NODE: &str = "https://testnet-grpc.fiammachain.io";
     // grpcurl -v -d '{"address":"fiamma19fldhw0awjv2ag7dz0lr3d4qmnfkxz69rzxcdp"}' testnet-grpc.fiammachain.io:443 cosmos.auth.v1beta1.Query/Account
-    // fiammad query tx --type=hash 788956C67333066D00A058AA4B3097EF00C3B22780D58F62D2CA3A002C9F4B41 --node tcp://57.180.14.122:26657 --chain-id fiamma-testnet-2
+    // fiammad query tx --type=hash 04DD64900B9AB19D2FFB5EE0118BC4C96E3B5F44110E329412BD5EF8B722FADD --node tcp://13.231.104.23:26657 --chain-id fiamma-testnet-1
 
     fn proof_artifacts() -> (Vec<u8>, Vec<u8>, Vec<u8>) {
         let location = std::env::current_dir().unwrap().join(TEST_DATA);

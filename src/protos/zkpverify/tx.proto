@@ -1,0 +1,56 @@
+syntax = "proto3";
+package fiamma.zkpverify;
+import "amino/amino.proto";
+import "cosmos/msg/v1/msg.proto";
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+import "zkpverify/params.proto";
+option go_package = "fiamma/x/zkpverify/types";
+// Msg defines the Msg service.
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+  // UpdateParams defines a (governance) operation for updating the module
+  // parameters. The authority defaults to the x/gov module account.
+  rpc UpdateParams(MsgUpdateParams) returns (MsgUpdateParamsResponse);
+  // SubmitProof defines a (zkpverify) operation for verifying a proof.
+  rpc SubmitProof(MsgSubmitProof) returns (MsgSubmitProofResponse);
+  // SubmitCommunityVerification defines a community (zkpverify) operation for verifying a proof.
+  rpc SubmitCommunityVerification(MsgSubmitCommunityVerification) returns (MsgSubmitCommunityVerificationResponse);
+}
+// MsgUpdateParams is the Msg/UpdateParams request type.
+message MsgUpdateParams {
+  option (cosmos.msg.v1.signer) = "authority";
+  option (amino.name) = "fiamma/x/zkpverify/MsgUpdateParams";
+  // authority is the address that controls the module (defaults to x/gov unless
+  // overwritten).
+  string authority = 1 [ (cosmos_proto.scalar) = "cosmos.AddressString" ];
+  // params defines the module parameters to update.
+  // NOTE: All parameters must be supplied.
+  Params params = 2
+      [ (gogoproto.nullable) = false, (amino.dont_omitempty) = true ];
+}
+// MsgUpdateParamsResponse defines the response structure for executing a
+// MsgUpdateParams message.
+message MsgUpdateParamsResponse {}
+// MsgSubmitProof is the proof verify verification request type.
+message MsgSubmitProof {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  string proof_system = 2;
+  bytes proof = 3;
+  bytes public_input = 4;
+  bytes vk = 5;
+}
+// MsgSubmitProofResponse defines the response structure for executing MsgSubmitProof
+message MsgSubmitProofResponse {}
+// MsgSendTaskResponse defines the response structure for executing MsgSendTask
+message MsgSendTaskResponse {}
+// MsgSubmitCommunityVerification is the proof verify community verification request type.
+message MsgSubmitCommunityVerification {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  string proof_id = 2;
+  bool verify_result = 3;
+}
+// MsgSubmitCommunityVerificationResponse defines the response structure for executing MsgSubmitCommunityVerification
+message MsgSubmitCommunityVerificationResponse {}

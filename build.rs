@@ -49,7 +49,12 @@ impl_name!(
 
     let out_dir = "src/generated";
     tonic_build::configure().out_dir(out_dir).compile(
-        &["src/protos/zkpverify.proto", "src/protos/bitvmstaker.proto"],
+        &[
+            "src/protos/zkpverify/tx.proto",
+            "src/protos/zkpverify/query.proto",
+            "src/protos/bitvmstaker/tx.proto",
+            "src/protos/bitvmstaker/query.proto",
+        ],
         &["src/protos", "src/protos/third_party"],
     )?;
     fs::write(PathBuf::from(out_dir).join("mod.rs"), code_string).unwrap();

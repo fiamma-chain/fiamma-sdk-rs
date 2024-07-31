@@ -3,46 +3,6 @@
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Params {}
-/// GenesisState defines the zkpverify module's genesis state.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct GenesisState {
-    /// params defines all the parameters of the module.
-    #[prost(message, optional, tag = "1")]
-    pub params: ::core::option::Option<Params>,
-}
-/// ProofData is the data structure for the proof verification request
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ProofData {
-    #[prost(enumeration = "ProofSystem", tag = "1")]
-    pub proof_system: i32,
-    #[prost(bytes = "vec", tag = "2")]
-    pub proof: ::prost::alloc::vec::Vec<u8>,
-    #[prost(bytes = "vec", tag = "3")]
-    pub public_input: ::prost::alloc::vec::Vec<u8>,
-    #[prost(bytes = "vec", tag = "4")]
-    pub vk: ::prost::alloc::vec::Vec<u8>,
-}
-/// VerifyResult is the data structure for the proof verification result
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct VerifyResult {
-    #[prost(string, tag = "1")]
-    pub proof_id: ::prost::alloc::string::String,
-    #[prost(enumeration = "ProofSystem", tag = "2")]
-    pub proof_system: i32,
-    #[prost(string, tag = "3")]
-    pub data_commitment: ::prost::alloc::string::String,
-    #[prost(enumeration = "DataLocation", tag = "4")]
-    pub data_location: i32,
-    #[prost(bool, tag = "5")]
-    pub result: bool,
-    #[prost(enumeration = "VerificationStatus", tag = "6")]
-    pub status: i32,
-    #[prost(uint64, tag = "7")]
-    pub community_verification_count: u64,
-}
 /// MsgUpdateParams is the Msg/UpdateParams request type.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -56,7 +16,8 @@ pub struct MsgUpdateParams {
     #[prost(message, optional, tag = "2")]
     pub params: ::core::option::Option<Params>,
 }
-/// MsgUpdateParamsResponse defines the response structure for executing a MsgUpdateParams message.
+/// MsgUpdateParamsResponse defines the response structure for executing a
+/// MsgUpdateParams message.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MsgUpdateParamsResponse {}
@@ -98,182 +59,6 @@ pub struct MsgSubmitCommunityVerification {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MsgSubmitCommunityVerificationResponse {}
-/// QueryParamsRequest is request type for the Query/Params RPC method.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct QueryParamsRequest {}
-/// QueryParamsResponse is response type for the Query/Params RPC method.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct QueryParamsResponse {
-    /// params holds all the parameters of this module.
-    #[prost(message, optional, tag = "1")]
-    pub params: ::core::option::Option<Params>,
-}
-/// QueryPendingProofRequest is request type for the Query/PendingProof RPC
-/// method.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct QueryPendingProofRequest {
-    #[prost(message, optional, tag = "1")]
-    pub pagination: ::core::option::Option<
-        super::super::cosmos::base::query::v1beta1::PageRequest,
-    >,
-}
-/// QueryPendingProofResponse is response type for the Query/PendingProof RPC
-/// method.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct QueryPendingProofResponse {
-    #[prost(message, repeated, tag = "1")]
-    pub pending_proofs: ::prost::alloc::vec::Vec<VerifyResult>,
-    #[prost(message, optional, tag = "2")]
-    pub pagination: ::core::option::Option<
-        super::super::cosmos::base::query::v1beta1::PageResponse,
-    >,
-}
-/// QueryProofDataRequest is request type for the Query/ProofData RPC
-/// method.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct QueryProofDataRequest {
-    #[prost(string, tag = "1")]
-    pub proof_id: ::prost::alloc::string::String,
-}
-/// QueryProofDataResponse is response type for the Query/ProofData RPC
-/// method.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct QueryProofDataResponse {
-    #[prost(message, optional, tag = "1")]
-    pub proof_data: ::core::option::Option<ProofData>,
-}
-/// QueryVerifyResultRequest is request type for the Query Proof verify result RPC
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct QueryVerifyResultRequest {
-    #[prost(string, tag = "1")]
-    pub proof_id: ::prost::alloc::string::String,
-}
-/// QueryVerifyResultResponse is response type for the Query Proof verify result RPC
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct QueryVerifyResultResponse {
-    #[prost(message, optional, tag = "1")]
-    pub verify_result: ::core::option::Option<VerifyResult>,
-}
-/// QueryBitVMWitnessRequest is request type for the Query/BitVMWitness RPC
-/// method.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct QueryBitVmWitnessRequest {
-    #[prost(string, tag = "1")]
-    pub proof_id: ::prost::alloc::string::String,
-}
-/// QueryBitVMWitnessResponse is response type for the Query/BitVMWitness RPC
-/// method.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct QueryBitVmWitnessResponse {
-    #[prost(string, tag = "1")]
-    pub witness: ::prost::alloc::string::String,
-}
-/// VerificationStatus is the verification status for the proof verification
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum VerificationStatus {
-    InitialValidation = 0,
-    CommunityValidation = 1,
-    DefinitiveValidation = 2,
-}
-impl VerificationStatus {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            VerificationStatus::InitialValidation => "INITIAL_VALIDATION",
-            VerificationStatus::CommunityValidation => "COMMUNITY_VALIDATION",
-            VerificationStatus::DefinitiveValidation => "DEFINITIVE_VALIDATION",
-        }
-    }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "INITIAL_VALIDATION" => Some(Self::InitialValidation),
-            "COMMUNITY_VALIDATION" => Some(Self::CommunityValidation),
-            "DEFINITIVE_VALIDATION" => Some(Self::DefinitiveValidation),
-            _ => None,
-        }
-    }
-}
-/// DataLocation is the proof data location for the proof verification
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum DataLocation {
-    Fiamma = 0,
-    Nubitda = 1,
-    Availda = 2,
-}
-impl DataLocation {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            DataLocation::Fiamma => "FIAMMA",
-            DataLocation::Nubitda => "NUBITDA",
-            DataLocation::Availda => "AVAILDA",
-        }
-    }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "FIAMMA" => Some(Self::Fiamma),
-            "NUBITDA" => Some(Self::Nubitda),
-            "AVAILDA" => Some(Self::Availda),
-            _ => None,
-        }
-    }
-}
-/// ProofSystem is the proof system for the proof verification
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum ProofSystem {
-    Groth16Bn254Bitvm = 0,
-    PlonkBn254 = 1,
-    PlonkBls12381 = 2,
-    Groth16Bn254 = 3,
-    Sp1 = 4,
-}
-impl ProofSystem {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            ProofSystem::Groth16Bn254Bitvm => "GROTH16_BN254_BITVM",
-            ProofSystem::PlonkBn254 => "PLONK_BN254",
-            ProofSystem::PlonkBls12381 => "PLONK_BLS12_381",
-            ProofSystem::Groth16Bn254 => "GROTH16_BN254",
-            ProofSystem::Sp1 => "SP1",
-        }
-    }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "GROTH16_BN254_BITVM" => Some(Self::Groth16Bn254Bitvm),
-            "PLONK_BN254" => Some(Self::PlonkBn254),
-            "PLONK_BLS12_381" => Some(Self::PlonkBls12381),
-            "GROTH16_BN254" => Some(Self::Groth16Bn254),
-            "SP1" => Some(Self::Sp1),
-            _ => None,
-        }
-    }
-}
 /// Generated client implementations.
 pub mod msg_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -442,223 +227,6 @@ pub mod msg_client {
                         "SubmitCommunityVerification",
                     ),
                 );
-            self.inner.unary(req, path, codec).await
-        }
-    }
-}
-/// Generated client implementations.
-pub mod query_client {
-    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
-    use tonic::codegen::*;
-    use tonic::codegen::http::Uri;
-    /// Query defines the gRPC querier service.
-    #[derive(Debug, Clone)]
-    pub struct QueryClient<T> {
-        inner: tonic::client::Grpc<T>,
-    }
-    impl QueryClient<tonic::transport::Channel> {
-        /// Attempt to create a new client by connecting to a given endpoint.
-        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
-        where
-            D: TryInto<tonic::transport::Endpoint>,
-            D::Error: Into<StdError>,
-        {
-            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
-            Ok(Self::new(conn))
-        }
-    }
-    impl<T> QueryClient<T>
-    where
-        T: tonic::client::GrpcService<tonic::body::BoxBody>,
-        T::Error: Into<StdError>,
-        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
-        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
-    {
-        pub fn new(inner: T) -> Self {
-            let inner = tonic::client::Grpc::new(inner);
-            Self { inner }
-        }
-        pub fn with_origin(inner: T, origin: Uri) -> Self {
-            let inner = tonic::client::Grpc::with_origin(inner, origin);
-            Self { inner }
-        }
-        pub fn with_interceptor<F>(
-            inner: T,
-            interceptor: F,
-        ) -> QueryClient<InterceptedService<T, F>>
-        where
-            F: tonic::service::Interceptor,
-            T::ResponseBody: Default,
-            T: tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
-                Response = http::Response<
-                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
-                >,
-            >,
-            <T as tonic::codegen::Service<
-                http::Request<tonic::body::BoxBody>,
-            >>::Error: Into<StdError> + Send + Sync,
-        {
-            QueryClient::new(InterceptedService::new(inner, interceptor))
-        }
-        /// Compress requests with the given encoding.
-        ///
-        /// This requires the server to support it otherwise it might respond with an
-        /// error.
-        #[must_use]
-        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
-            self.inner = self.inner.send_compressed(encoding);
-            self
-        }
-        /// Enable decompressing responses.
-        #[must_use]
-        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
-            self.inner = self.inner.accept_compressed(encoding);
-            self
-        }
-        /// Limits the maximum size of a decoded message.
-        ///
-        /// Default: `4MB`
-        #[must_use]
-        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
-            self.inner = self.inner.max_decoding_message_size(limit);
-            self
-        }
-        /// Limits the maximum size of an encoded message.
-        ///
-        /// Default: `usize::MAX`
-        #[must_use]
-        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
-            self.inner = self.inner.max_encoding_message_size(limit);
-            self
-        }
-        /// Parameters queries the parameters of the module.
-        pub async fn params(
-            &mut self,
-            request: impl tonic::IntoRequest<super::QueryParamsRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::QueryParamsResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/fiamma.zkpverify.Query/Params",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(GrpcMethod::new("fiamma.zkpverify.Query", "Params"));
-            self.inner.unary(req, path, codec).await
-        }
-        /// Queries a list of PendingProof items.
-        pub async fn pending_proof(
-            &mut self,
-            request: impl tonic::IntoRequest<super::QueryPendingProofRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::QueryPendingProofResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/fiamma.zkpverify.Query/PendingProof",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(GrpcMethod::new("fiamma.zkpverify.Query", "PendingProof"));
-            self.inner.unary(req, path, codec).await
-        }
-        /// Queries proof data by proof id
-        pub async fn proof_data(
-            &mut self,
-            request: impl tonic::IntoRequest<super::QueryProofDataRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::QueryProofDataResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/fiamma.zkpverify.Query/ProofData",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(GrpcMethod::new("fiamma.zkpverify.Query", "ProofData"));
-            self.inner.unary(req, path, codec).await
-        }
-        pub async fn verify_result(
-            &mut self,
-            request: impl tonic::IntoRequest<super::QueryVerifyResultRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::QueryVerifyResultResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/fiamma.zkpverify.Query/VerifyResult",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(GrpcMethod::new("fiamma.zkpverify.Query", "VerifyResult"));
-            self.inner.unary(req, path, codec).await
-        }
-        /// Queries bitvm witness by proof id
-        pub async fn bit_vm_witness(
-            &mut self,
-            request: impl tonic::IntoRequest<super::QueryBitVmWitnessRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::QueryBitVmWitnessResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/fiamma.zkpverify.Query/BitVMWitness",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(GrpcMethod::new("fiamma.zkpverify.Query", "BitVMWitness"));
             self.inner.unary(req, path, codec).await
         }
     }
@@ -954,6 +522,445 @@ pub mod msg_server {
         const NAME: &'static str = "fiamma.zkpverify.Msg";
     }
 }
+/// ProofData is the data structure for the proof verification request
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ProofData {
+    #[prost(enumeration = "ProofSystem", tag = "1")]
+    pub proof_system: i32,
+    #[prost(bytes = "vec", tag = "2")]
+    pub proof: ::prost::alloc::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "3")]
+    pub public_input: ::prost::alloc::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "4")]
+    pub vk: ::prost::alloc::vec::Vec<u8>,
+}
+/// VerifyResult is the data structure for the proof verification result
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VerifyResult {
+    #[prost(string, tag = "1")]
+    pub proof_id: ::prost::alloc::string::String,
+    #[prost(enumeration = "ProofSystem", tag = "2")]
+    pub proof_system: i32,
+    #[prost(string, tag = "3")]
+    pub data_commitment: ::prost::alloc::string::String,
+    #[prost(enumeration = "DataLocation", tag = "4")]
+    pub data_location: i32,
+    #[prost(bool, tag = "5")]
+    pub result: bool,
+    #[prost(enumeration = "VerificationStatus", tag = "6")]
+    pub status: i32,
+    #[prost(uint64, tag = "7")]
+    pub community_verification_count: u64,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BitVmChallengeData {
+    #[prost(bool, tag = "1")]
+    pub verify_result: bool,
+    #[prost(bytes = "vec", tag = "2")]
+    pub witness: ::prost::alloc::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "3")]
+    pub vk: ::prost::alloc::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "4")]
+    pub public_input: ::prost::alloc::vec::Vec<u8>,
+    #[prost(string, tag = "5")]
+    pub proposer: ::prost::alloc::string::String,
+}
+/// VerificationStatus is the verification status enum for the proof verification
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum VerificationStatus {
+    InitialValidation = 0,
+    CommunityValidation = 1,
+    DefinitiveValidation = 2,
+}
+impl VerificationStatus {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            VerificationStatus::InitialValidation => "INITIAL_VALIDATION",
+            VerificationStatus::CommunityValidation => "COMMUNITY_VALIDATION",
+            VerificationStatus::DefinitiveValidation => "DEFINITIVE_VALIDATION",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "INITIAL_VALIDATION" => Some(Self::InitialValidation),
+            "COMMUNITY_VALIDATION" => Some(Self::CommunityValidation),
+            "DEFINITIVE_VALIDATION" => Some(Self::DefinitiveValidation),
+            _ => None,
+        }
+    }
+}
+/// DataLocation is the proof data location enum for the proof verification
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum DataLocation {
+    Fiamma = 0,
+    Nubitda = 1,
+    Availda = 2,
+}
+impl DataLocation {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            DataLocation::Fiamma => "FIAMMA",
+            DataLocation::Nubitda => "NUBITDA",
+            DataLocation::Availda => "AVAILDA",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "FIAMMA" => Some(Self::Fiamma),
+            "NUBITDA" => Some(Self::Nubitda),
+            "AVAILDA" => Some(Self::Availda),
+            _ => None,
+        }
+    }
+}
+/// ProofSystem is the proof system enum for the proof verification
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ProofSystem {
+    Groth16Bn254Bitvm = 0,
+    PlonkBn254 = 1,
+    PlonkBls12381 = 2,
+    Groth16Bn254 = 3,
+    Sp1 = 4,
+}
+impl ProofSystem {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            ProofSystem::Groth16Bn254Bitvm => "GROTH16_BN254_BITVM",
+            ProofSystem::PlonkBn254 => "PLONK_BN254",
+            ProofSystem::PlonkBls12381 => "PLONK_BLS12_381",
+            ProofSystem::Groth16Bn254 => "GROTH16_BN254",
+            ProofSystem::Sp1 => "SP1",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "GROTH16_BN254_BITVM" => Some(Self::Groth16Bn254Bitvm),
+            "PLONK_BN254" => Some(Self::PlonkBn254),
+            "PLONK_BLS12_381" => Some(Self::PlonkBls12381),
+            "GROTH16_BN254" => Some(Self::Groth16Bn254),
+            "SP1" => Some(Self::Sp1),
+            _ => None,
+        }
+    }
+}
+/// QueryParamsRequest is request type for the Query/Params RPC method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryParamsRequest {}
+/// QueryParamsResponse is response type for the Query/Params RPC method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryParamsResponse {
+    /// params holds all the parameters of this module.
+    #[prost(message, optional, tag = "1")]
+    pub params: ::core::option::Option<Params>,
+}
+/// QueryPendingProofRequest is request type for the Query/PendingProof RPC
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryPendingProofRequest {
+    #[prost(message, optional, tag = "1")]
+    pub pagination: ::core::option::Option<
+        super::super::cosmos::base::query::v1beta1::PageRequest,
+    >,
+}
+/// QueryPendingProofResponse is response type for the Query/PendingProof RPC
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryPendingProofResponse {
+    #[prost(message, repeated, tag = "1")]
+    pub pending_proofs: ::prost::alloc::vec::Vec<VerifyResult>,
+    #[prost(message, optional, tag = "2")]
+    pub pagination: ::core::option::Option<
+        super::super::cosmos::base::query::v1beta1::PageResponse,
+    >,
+}
+/// QueryProofDataRequest is request type for the Query/ProofData RPC
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryProofDataRequest {
+    #[prost(string, tag = "1")]
+    pub proof_id: ::prost::alloc::string::String,
+}
+/// QueryProofDataResponse is response type for the Query/ProofData RPC
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryProofDataResponse {
+    #[prost(message, optional, tag = "1")]
+    pub proof_data: ::core::option::Option<ProofData>,
+}
+/// QueryVerifyResultRequest is request type for the Query Proof verify result RPC
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryVerifyResultRequest {
+    #[prost(string, tag = "1")]
+    pub proof_id: ::prost::alloc::string::String,
+}
+/// QueryVerifyResultResponse is response type for the Query Proof verify result RPC
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryVerifyResultResponse {
+    #[prost(message, optional, tag = "1")]
+    pub verify_result: ::core::option::Option<VerifyResult>,
+}
+/// QueryBitVMChallengeDataRequest is request type for the Query/BitVMChallengeData RPC
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryBitVmChallengeDataRequest {
+    #[prost(string, tag = "1")]
+    pub proof_id: ::prost::alloc::string::String,
+}
+/// QueryBitVMChallengeDataResponse is response type for the Query/BitVMChallengeData RPC
+/// method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryBitVmChallengeDataResponse {
+    #[prost(message, optional, tag = "1")]
+    pub bitvm_challenge_data: ::core::option::Option<BitVmChallengeData>,
+}
+/// Generated client implementations.
+pub mod query_client {
+    #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
+    use tonic::codegen::*;
+    use tonic::codegen::http::Uri;
+    /// Query defines the gRPC querier service.
+    #[derive(Debug, Clone)]
+    pub struct QueryClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl QueryClient<tonic::transport::Channel> {
+        /// Attempt to create a new client by connecting to a given endpoint.
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> QueryClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::Error: Into<StdError>,
+        T::ResponseBody: Body<Data = Bytes> + Send + 'static,
+        <T::ResponseBody as Body>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_origin(inner: T, origin: Uri) -> Self {
+            let inner = tonic::client::Grpc::with_origin(inner, origin);
+            Self { inner }
+        }
+        pub fn with_interceptor<F>(
+            inner: T,
+            interceptor: F,
+        ) -> QueryClient<InterceptedService<T, F>>
+        where
+            F: tonic::service::Interceptor,
+            T::ResponseBody: Default,
+            T: tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+                Response = http::Response<
+                    <T as tonic::client::GrpcService<tonic::body::BoxBody>>::ResponseBody,
+                >,
+            >,
+            <T as tonic::codegen::Service<
+                http::Request<tonic::body::BoxBody>,
+            >>::Error: Into<StdError> + Send + Sync,
+        {
+            QueryClient::new(InterceptedService::new(inner, interceptor))
+        }
+        /// Compress requests with the given encoding.
+        ///
+        /// This requires the server to support it otherwise it might respond with an
+        /// error.
+        #[must_use]
+        pub fn send_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.send_compressed(encoding);
+            self
+        }
+        /// Enable decompressing responses.
+        #[must_use]
+        pub fn accept_compressed(mut self, encoding: CompressionEncoding) -> Self {
+            self.inner = self.inner.accept_compressed(encoding);
+            self
+        }
+        /// Limits the maximum size of a decoded message.
+        ///
+        /// Default: `4MB`
+        #[must_use]
+        pub fn max_decoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_decoding_message_size(limit);
+            self
+        }
+        /// Limits the maximum size of an encoded message.
+        ///
+        /// Default: `usize::MAX`
+        #[must_use]
+        pub fn max_encoding_message_size(mut self, limit: usize) -> Self {
+            self.inner = self.inner.max_encoding_message_size(limit);
+            self
+        }
+        /// Parameters queries the parameters of the module.
+        pub async fn params(
+            &mut self,
+            request: impl tonic::IntoRequest<super::QueryParamsRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryParamsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/fiamma.zkpverify.Query/Params",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("fiamma.zkpverify.Query", "Params"));
+            self.inner.unary(req, path, codec).await
+        }
+        /// Queries a list of PendingProof items.
+        pub async fn pending_proof(
+            &mut self,
+            request: impl tonic::IntoRequest<super::QueryPendingProofRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryPendingProofResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/fiamma.zkpverify.Query/PendingProof",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("fiamma.zkpverify.Query", "PendingProof"));
+            self.inner.unary(req, path, codec).await
+        }
+        /// Queries proof data by proof id
+        pub async fn proof_data(
+            &mut self,
+            request: impl tonic::IntoRequest<super::QueryProofDataRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryProofDataResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/fiamma.zkpverify.Query/ProofData",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("fiamma.zkpverify.Query", "ProofData"));
+            self.inner.unary(req, path, codec).await
+        }
+        pub async fn verify_result(
+            &mut self,
+            request: impl tonic::IntoRequest<super::QueryVerifyResultRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryVerifyResultResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/fiamma.zkpverify.Query/VerifyResult",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("fiamma.zkpverify.Query", "VerifyResult"));
+            self.inner.unary(req, path, codec).await
+        }
+        /// Queries bitvm witness by proof id
+        pub async fn bit_vm_challenge_data(
+            &mut self,
+            request: impl tonic::IntoRequest<super::QueryBitVmChallengeDataRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryBitVmChallengeDataResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/fiamma.zkpverify.Query/BitVMChallengeData",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("fiamma.zkpverify.Query", "BitVMChallengeData"));
+            self.inner.unary(req, path, codec).await
+        }
+    }
+}
 /// Generated server implementations.
 pub mod query_server {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -993,11 +1000,11 @@ pub mod query_server {
             tonic::Status,
         >;
         /// Queries bitvm witness by proof id
-        async fn bit_vm_witness(
+        async fn bit_vm_challenge_data(
             &self,
-            request: tonic::Request<super::QueryBitVmWitnessRequest>,
+            request: tonic::Request<super::QueryBitVmChallengeDataRequest>,
         ) -> std::result::Result<
-            tonic::Response<super::QueryBitVmWitnessResponse>,
+            tonic::Response<super::QueryBitVmChallengeDataResponse>,
             tonic::Status,
         >;
     }
@@ -1263,25 +1270,27 @@ pub mod query_server {
                     };
                     Box::pin(fut)
                 }
-                "/fiamma.zkpverify.Query/BitVMWitness" => {
+                "/fiamma.zkpverify.Query/BitVMChallengeData" => {
                     #[allow(non_camel_case_types)]
-                    struct BitVMWitnessSvc<T: Query>(pub Arc<T>);
+                    struct BitVMChallengeDataSvc<T: Query>(pub Arc<T>);
                     impl<
                         T: Query,
-                    > tonic::server::UnaryService<super::QueryBitVmWitnessRequest>
-                    for BitVMWitnessSvc<T> {
-                        type Response = super::QueryBitVmWitnessResponse;
+                    > tonic::server::UnaryService<super::QueryBitVmChallengeDataRequest>
+                    for BitVMChallengeDataSvc<T> {
+                        type Response = super::QueryBitVmChallengeDataResponse;
                         type Future = BoxFuture<
                             tonic::Response<Self::Response>,
                             tonic::Status,
                         >;
                         fn call(
                             &mut self,
-                            request: tonic::Request<super::QueryBitVmWitnessRequest>,
+                            request: tonic::Request<
+                                super::QueryBitVmChallengeDataRequest,
+                            >,
                         ) -> Self::Future {
                             let inner = Arc::clone(&self.0);
                             let fut = async move {
-                                <T as Query>::bit_vm_witness(&inner, request).await
+                                <T as Query>::bit_vm_challenge_data(&inner, request).await
                             };
                             Box::pin(fut)
                         }
@@ -1293,7 +1302,7 @@ pub mod query_server {
                     let inner = self.inner.clone();
                     let fut = async move {
                         let inner = inner.0;
-                        let method = BitVMWitnessSvc(inner);
+                        let method = BitVMChallengeDataSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = tonic::server::Grpc::new(codec)
                             .apply_compression_config(

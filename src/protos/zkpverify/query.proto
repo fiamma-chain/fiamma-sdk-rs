@@ -1,0 +1,82 @@
+syntax = "proto3";
+package fiamma.zkpverify;
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "zkpverify/params.proto";
+import "zkpverify/zkpverify.proto";
+option go_package = "fiamma/x/zkpverify/types";
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/fiamma/zkpverify/params";
+  }
+  // Queries a list of PendingProof items.
+  rpc PendingProof(QueryPendingProofRequest)
+      returns (QueryPendingProofResponse) {
+    option (google.api.http).get = "/fiamma/zkpverify/pending_proof";
+  }
+  // Queries proof data by proof id
+  rpc ProofData(QueryProofDataRequest)
+      returns (QueryProofDataResponse) {
+    option (google.api.http).get = "/fiamma/zkpverify/get_proof_data";
+  }
+  rpc VerifyResult(QueryVerifyResultRequest)
+      returns (QueryVerifyResultResponse) {
+    option (google.api.http).get = "/fiamma/zkpverify/get_verify_result";
+  }
+  // Queries bitvm witness by proof id
+  rpc BitVMChallengeData(QueryBitVMChallengeDataRequest)
+      returns (QueryBitVMChallengeDataResponse) {
+    option (google.api.http).get = "/fiamma/zkpverify/get_bitvm_challenge_data";
+  }
+}
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1
+      [ (gogoproto.nullable) = false, (amino.dont_omitempty) = true ];
+}
+// QueryPendingProofRequest is request type for the Query/PendingProof RPC
+// method.
+message QueryPendingProofRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+// QueryPendingProofResponse is response type for the Query/PendingProof RPC
+// method.
+message QueryPendingProofResponse {
+  repeated  fiamma.zkpverify.VerifyResult pending_proofs = 1;
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+// QueryProofDataRequest is request type for the Query/ProofData RPC
+// method.
+message QueryProofDataRequest {
+  string proof_id = 1;
+}
+// QueryProofDataResponse is response type for the Query/ProofData RPC
+// method.
+message QueryProofDataResponse { 
+  fiamma.zkpverify.ProofData proof_data = 1;
+}
+// QueryVerifyResultRequest is request type for the Query Proof verify result RPC
+message QueryVerifyResultRequest {
+  string proof_id = 1;
+}
+// QueryVerifyResultResponse is response type for the Query Proof verify result RPC
+message QueryVerifyResultResponse { 
+  fiamma.zkpverify.VerifyResult verify_result = 1;
+}
+// QueryBitVMChallengeDataRequest is request type for the Query/BitVMChallengeData RPC 
+// method.
+message QueryBitVMChallengeDataRequest {
+  string proof_id = 1;
+}
+// QueryBitVMChallengeDataResponse is response type for the Query/BitVMChallengeData RPC
+// method.
+message QueryBitVMChallengeDataResponse {
+  fiamma.zkpverify.BitVMChallengeData bitvm_challenge_data = 1;
+}
