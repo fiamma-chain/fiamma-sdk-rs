@@ -5,8 +5,9 @@ use crate::{
     types::{MsgCreateStaker, MsgSubmitProof},
     wallet::Wallet,
 };
-use cosmos_sdk_proto::cosmos::tx::v1beta1::{
-    service_client::ServiceClient, BroadcastMode, BroadcastTxRequest, BroadcastTxResponse,
+use cosmos_sdk_proto::cosmos::{
+    base::abci::v1beta1::TxResponse,
+    tx::v1beta1::{service_client::ServiceClient, BroadcastMode, BroadcastTxRequest, BroadcastTxResponse, GetTxRequest},
 };
 use cosmrs::{
     tx::{BodyBuilder, Fee, Msg, Raw, SignDoc, SignerInfo},
@@ -76,6 +77,22 @@ impl TxClient {
             SignerInfo::single_direct(Some(self.wallet.public_key), sequence).auth_info(fee);
         let sign_doc = SignDoc::new(&tx_body, &auth_info, &chain_id, account_number)?;
         self.wallet.sign(sign_doc)
+    }
+
+    // TODO: This use ServiceClient, but do not need private_key, fee, gas_limit, refactor it!
+    pub async fn get_tx(&self, tx_id: &str) -> Result<TxResponse> {
+        let mut client = ServiceClient::connect(self.rpc.clone()).await?;
+        let resp = client
+            .get_tx(GetTxRequest {
+                hash: tx_id.to_string(),
+            })
+            .await?;
+        let tx_response = resp
+            .get_ref()
+            .clone()
+            .tx_response
+            .ok_or(ErrorReport::msg("Failed to parse TxResponse while get_tx"))?;
+        Ok(tx_response)
     }
 }
 
@@ -159,5 +176,15 @@ mod tests {
         };
         let resp = tx_client.create_staker(msg).await;
         println!("resp: {:?}", resp);
+    }
+
+    #[tokio::test]
+    async fn test_get_tx() {
+        let gas_limit = 80_000_000_u64;
+        let fee = 2000_u128;
+        let tx_id = "EB65C148A8A06B0F0E36967E27E38B6AE6D40C1DCB6D7B12F7B305729D373AB5";
+        let query_client = TxClient::new(SENDER_PRIVATE_KEY, NODE, fee, gas_limit);
+        let tx = query_client.get_tx(tx_id).await;
+        println!("tx: {:?}", tx);
     }
 }
