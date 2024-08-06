@@ -106,7 +106,7 @@ mod tests {
     const BITVM_PROOF_SYSTEM: &str = "GROTH16_BN254_BITVM";
     const TEST_DATA: &str = "test-data";
     const SENDER_PRIVATE_KEY: &str =
-        "7ae58f95b0f15c999f77488fa0fbebbd4acbe2d12948dcd1729b07ee8f3051e8";
+        "d25da18393e1e3be637cba299ff08621757a134911029abd8a52fb4a989d2f73";
     const NODE: &str = "http://13.231.104.23:9090";
     // const NODE: &str = "https://testnet-grpc.fiammachain.io";
     // grpcurl -v -d '{"address":"fiamma19fldhw0awjv2ag7dz0lr3d4qmnfkxz69rzxcdp"}' testnet-grpc.fiammachain.io:443 cosmos.auth.v1beta1.Query/Account
@@ -182,7 +182,7 @@ mod tests {
     async fn test_get_tx() {
         let gas_limit = 80_000_000_u64;
         let fee = 2000_u128;
-        let tx_id = "EB65C148A8A06B0F0E36967E27E38B6AE6D40C1DCB6D7B12F7B305729D373AB5";
+        let tx_id = "DAFD01EB130B6497502920CA22FDC19E0898E2130748095F2579535095EF2539";
         let query_client = TxClient::new(SENDER_PRIVATE_KEY, NODE, fee, gas_limit);
         let tx = query_client.get_tx(tx_id).await;
         println!("tx: {:?}", tx);
