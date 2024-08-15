@@ -49,6 +49,10 @@ impl TxClient {
         self.construct_broadcast_tx(msg.to_any()?).await
     }
 
+    pub async fn remove_staker(&self, msg: MsgCreateStaker) -> Result<BroadcastTxResponse> {
+        self.construct_broadcast_tx(msg.to_any()?).await
+    }
+
     async fn construct_broadcast_tx(&self, msg: impl Into<Any>) -> Result<BroadcastTxResponse> {
         let raw_tx = self.construct_tx(msg).await?;
         let mut client = ServiceClient::connect(self.rpc.clone()).await?;
@@ -169,6 +173,20 @@ mod tests {
 
     #[tokio::test]
     async fn test_create_staker() {
+        let wallet = Wallet::new(SENDER_PRIVATE_KEY);
+        let gas_limit = 80_000_000_u64;
+        let fee = 2000_u128;
+        let tx_client = TxClient::new(SENDER_PRIVATE_KEY, NODE, fee, gas_limit);
+        let msg = MsgCreateStaker {
+            creator: wallet.account_id.clone(),
+            staker_address: "fiammavaloper19fldhw0awjv2ag7dz0lr3d4qmnfkxz69vukt7x".to_string(),
+        };
+        let resp = tx_client.create_staker(msg).await;
+        println!("resp: {:?}", resp);
+    }
+
+    #[tokio::test]
+    async fn test_remove_staker() {
         let wallet = Wallet::new(SENDER_PRIVATE_KEY);
         let gas_limit = 80_000_000_u64;
         let fee = 2000_u128;
