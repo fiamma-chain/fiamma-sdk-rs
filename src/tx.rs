@@ -2,7 +2,7 @@
 
 use crate::{
     chain::*,
-    types::{MsgCreateStaker, MsgSubmitProof},
+    types::{MsgCreateStaker, MsgRemoveStaker, MsgSubmitProof},
     wallet::Wallet,
 };
 use cosmos_sdk_proto::cosmos::{
@@ -49,7 +49,7 @@ impl TxClient {
         self.construct_broadcast_tx(msg.to_any()?).await
     }
 
-    pub async fn remove_staker(&self, msg: MsgCreateStaker) -> Result<BroadcastTxResponse> {
+    pub async fn remove_staker(&self, msg: MsgRemoveStaker) -> Result<BroadcastTxResponse> {
         self.construct_broadcast_tx(msg.to_any()?).await
     }
 
@@ -105,7 +105,7 @@ impl TxClient {
 
 #[cfg(test)]
 mod tests {
-    use super::{MsgCreateStaker, MsgSubmitProof};
+    use super::{MsgCreateStaker, MsgRemoveStaker, MsgSubmitProof};
     use crate::{tx::TxClient, wallet::Wallet};
     use cosmrs::AccountId;
     use sha2::{Digest, Sha256};
@@ -191,11 +191,11 @@ mod tests {
         let gas_limit = 80_000_000_u64;
         let fee = 2000_u128;
         let tx_client = TxClient::new(SENDER_PRIVATE_KEY, NODE, fee, gas_limit);
-        let msg = MsgCreateStaker {
+        let msg = MsgRemoveStaker {
             creator: wallet.account_id.clone(),
             staker_address: "fiammavaloper19fldhw0awjv2ag7dz0lr3d4qmnfkxz69vukt7x".to_string(),
         };
-        let resp = tx_client.create_staker(msg).await;
+        let resp = tx_client.remove_staker(msg).await;
         println!("resp: {:?}", resp);
     }
 

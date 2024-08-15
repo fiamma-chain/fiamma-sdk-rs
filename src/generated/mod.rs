@@ -41,3 +41,9 @@ impl_name!(
     "fiamma.bitvmstaker",
     "MsgCreateStaker"
 );
+
+impl_name!(
+    fiamma::bitvmstaker::MsgRemoveStaker,
+    "fiamma.bitvmstaker",
+    "MsgRemoveStaker"
+);
