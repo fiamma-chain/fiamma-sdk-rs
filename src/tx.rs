@@ -7,7 +7,10 @@ use crate::{
 };
 use cosmos_sdk_proto::cosmos::{
     base::abci::v1beta1::TxResponse,
-    tx::v1beta1::{service_client::ServiceClient, BroadcastMode, BroadcastTxRequest, BroadcastTxResponse, GetTxRequest},
+    tx::v1beta1::{
+        service_client::ServiceClient, BroadcastMode, BroadcastTxRequest, BroadcastTxResponse,
+        GetTxRequest,
+    },
 };
 use cosmrs::{
     tx::{BodyBuilder, Fee, Msg, Raw, SignDoc, SignerInfo},

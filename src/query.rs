@@ -13,7 +13,9 @@ pub struct QueryClient {
 
 impl QueryClient {
     pub fn new(rpc: &str) -> Self {
-        Self { rpc: rpc.to_string() }
+        Self {
+            rpc: rpc.to_string(),
+        }
     }
 
     pub async fn get_proof_data(&self, proof_id: &str) -> Result<ProofData> {
