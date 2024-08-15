@@ -45,7 +45,14 @@ impl_name!(
     fiamma::bitvmstaker::MsgCreateStaker,
     "fiamma.bitvmstaker",
     "MsgCreateStaker"
-);"#;
+);
+
+impl_name!(
+    fiamma::bitvmstaker::MsgRemoveStaker,
+    "fiamma.bitvmstaker",
+    "MsgRemoveStaker"
+);
+"#;
 
     let out_dir = "src/generated";
     tonic_build::configure().out_dir(out_dir).compile(
