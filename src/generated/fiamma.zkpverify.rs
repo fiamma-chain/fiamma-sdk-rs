@@ -35,6 +35,8 @@ pub struct MsgSubmitProof {
     pub public_input: ::prost::alloc::vec::Vec<u8>,
     #[prost(bytes = "vec", tag = "5")]
     pub vk: ::prost::alloc::vec::Vec<u8>,
+    #[prost(string, tag = "6")]
+    pub namespace: ::prost::alloc::string::String,
 }
 /// MsgSubmitProofResponse defines the response structure for executing MsgSubmitProof
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -534,6 +536,8 @@ pub struct ProofData {
     pub public_input: ::prost::alloc::vec::Vec<u8>,
     #[prost(bytes = "vec", tag = "4")]
     pub vk: ::prost::alloc::vec::Vec<u8>,
+    #[prost(string, tag = "5")]
+    pub namespace: ::prost::alloc::string::String,
 }
 /// VerifyResult is the data structure for the proof verification result
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -553,6 +557,8 @@ pub struct VerifyResult {
     pub status: i32,
     #[prost(uint64, tag = "7")]
     pub community_verification_count: u64,
+    #[prost(string, tag = "8")]
+    pub namespace: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -743,6 +749,50 @@ pub struct QueryBitVmChallengeDataRequest {
 pub struct QueryBitVmChallengeDataResponse {
     #[prost(message, optional, tag = "1")]
     pub bitvm_challenge_data: ::core::option::Option<BitVmChallengeData>,
+}
+/// QueryVerifyResultsByNamespaceRequest is the request type for the Query/VerifyResultsByNamespace RPC method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryVerifyResultsByNamespaceRequest {
+    #[prost(string, tag = "1")]
+    pub namespace: ::prost::alloc::string::String,
+    #[prost(message, optional, tag = "2")]
+    pub pagination: ::core::option::Option<
+        super::super::cosmos::base::query::v1beta1::PageRequest,
+    >,
+}
+/// QueryVerifyResultsByNamespaceResponse is the response type for the Query/VerifyResultsByNamespace RPC method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryVerifyResultsByNamespaceResponse {
+    #[prost(message, repeated, tag = "1")]
+    pub verify_results: ::prost::alloc::vec::Vec<VerifyResult>,
+    #[prost(message, optional, tag = "2")]
+    pub pagination: ::core::option::Option<
+        super::super::cosmos::base::query::v1beta1::PageResponse,
+    >,
+}
+/// QueryPendingProofByNamespaceRequest is request type for the Query/PendingProofByNamespace RPC method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryPendingProofByNamespaceRequest {
+    #[prost(string, tag = "1")]
+    pub namespace: ::prost::alloc::string::String,
+    #[prost(message, optional, tag = "2")]
+    pub pagination: ::core::option::Option<
+        super::super::cosmos::base::query::v1beta1::PageRequest,
+    >,
+}
+/// QueryPendingProofByNamespaceResponse is response type for the Query/PendingProofByNamespace RPC method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryPendingProofByNamespaceResponse {
+    #[prost(message, repeated, tag = "1")]
+    pub pending_proofs: ::prost::alloc::vec::Vec<VerifyResult>,
+    #[prost(message, optional, tag = "2")]
+    pub pagination: ::core::option::Option<
+        super::super::cosmos::base::query::v1beta1::PageResponse,
+    >,
 }
 /// Generated client implementations.
 pub mod query_client {
@@ -959,6 +1009,62 @@ pub mod query_client {
                 .insert(GrpcMethod::new("fiamma.zkpverify.Query", "BitVMChallengeData"));
             self.inner.unary(req, path, codec).await
         }
+        /// Queries a list of VerifyResult items by namespace.
+        pub async fn verify_results_by_namespace(
+            &mut self,
+            request: impl tonic::IntoRequest<super::QueryVerifyResultsByNamespaceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryVerifyResultsByNamespaceResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/fiamma.zkpverify.Query/VerifyResultsByNamespace",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("fiamma.zkpverify.Query", "VerifyResultsByNamespace"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
+        /// Queries a list of PendingProofByNamespace items.
+        pub async fn pending_proof_by_namespace(
+            &mut self,
+            request: impl tonic::IntoRequest<super::QueryPendingProofByNamespaceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryPendingProofByNamespaceResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/fiamma.zkpverify.Query/PendingProofByNamespace",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("fiamma.zkpverify.Query", "PendingProofByNamespace"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// Generated server implementations.
@@ -1005,6 +1111,22 @@ pub mod query_server {
             request: tonic::Request<super::QueryBitVmChallengeDataRequest>,
         ) -> std::result::Result<
             tonic::Response<super::QueryBitVmChallengeDataResponse>,
+            tonic::Status,
+        >;
+        /// Queries a list of VerifyResult items by namespace.
+        async fn verify_results_by_namespace(
+            &self,
+            request: tonic::Request<super::QueryVerifyResultsByNamespaceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryVerifyResultsByNamespaceResponse>,
+            tonic::Status,
+        >;
+        /// Queries a list of PendingProofByNamespace items.
+        async fn pending_proof_by_namespace(
+            &self,
+            request: tonic::Request<super::QueryPendingProofByNamespaceRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryPendingProofByNamespaceResponse>,
             tonic::Status,
         >;
     }
@@ -1303,6 +1425,106 @@ pub mod query_server {
                     let fut = async move {
                         let inner = inner.0;
                         let method = BitVMChallengeDataSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            )
+                            .apply_max_message_size_config(
+                                max_decoding_message_size,
+                                max_encoding_message_size,
+                            );
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/fiamma.zkpverify.Query/VerifyResultsByNamespace" => {
+                    #[allow(non_camel_case_types)]
+                    struct VerifyResultsByNamespaceSvc<T: Query>(pub Arc<T>);
+                    impl<
+                        T: Query,
+                    > tonic::server::UnaryService<
+                        super::QueryVerifyResultsByNamespaceRequest,
+                    > for VerifyResultsByNamespaceSvc<T> {
+                        type Response = super::QueryVerifyResultsByNamespaceResponse;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<
+                                super::QueryVerifyResultsByNamespaceRequest,
+                            >,
+                        ) -> Self::Future {
+                            let inner = Arc::clone(&self.0);
+                            let fut = async move {
+                                <T as Query>::verify_results_by_namespace(&inner, request)
+                                    .await
+                            };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let max_decoding_message_size = self.max_decoding_message_size;
+                    let max_encoding_message_size = self.max_encoding_message_size;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let inner = inner.0;
+                        let method = VerifyResultsByNamespaceSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            )
+                            .apply_max_message_size_config(
+                                max_decoding_message_size,
+                                max_encoding_message_size,
+                            );
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/fiamma.zkpverify.Query/PendingProofByNamespace" => {
+                    #[allow(non_camel_case_types)]
+                    struct PendingProofByNamespaceSvc<T: Query>(pub Arc<T>);
+                    impl<
+                        T: Query,
+                    > tonic::server::UnaryService<
+                        super::QueryPendingProofByNamespaceRequest,
+                    > for PendingProofByNamespaceSvc<T> {
+                        type Response = super::QueryPendingProofByNamespaceResponse;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<
+                                super::QueryPendingProofByNamespaceRequest,
+                            >,
+                        ) -> Self::Future {
+                            let inner = Arc::clone(&self.0);
+                            let fut = async move {
+                                <T as Query>::pending_proof_by_namespace(&inner, request)
+                                    .await
+                            };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let max_decoding_message_size = self.max_decoding_message_size;
+                    let max_encoding_message_size = self.max_encoding_message_size;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let inner = inner.0;
+                        let method = PendingProofByNamespaceSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = tonic::server::Grpc::new(codec)
                             .apply_compression_config(

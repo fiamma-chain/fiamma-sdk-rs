@@ -111,10 +111,11 @@ mod tests {
     use sha2::{Digest, Sha256};
 
     const BITVM_PROOF_SYSTEM: &str = "GROTH16_BN254_BITVM";
+    const NAMESPACE: &str = "ZULU";
     const TEST_DATA: &str = "test-data";
     const SENDER_PRIVATE_KEY: &str =
         "d25da18393e1e3be637cba299ff08621757a134911029abd8a52fb4a989d2f73";
-    const NODE: &str = "http://13.231.104.23:9090";
+    const NODE: &str = "http://54.65.137.66:9090";
     // const NODE: &str = "https://testnet-grpc.fiammachain.io";
     // grpcurl -v -d '{"address":"fiamma19fldhw0awjv2ag7dz0lr3d4qmnfkxz69rzxcdp"}' testnet-grpc.fiammachain.io:443 cosmos.auth.v1beta1.Query/Account
     // fiammad query tx --type=hash 04DD64900B9AB19D2FFB5EE0118BC4C96E3B5F44110E329412BD5EF8B722FADD --node tcp://13.231.104.23:26657 --chain-id fiamma-testnet-1
@@ -136,7 +137,7 @@ mod tests {
     #[test]
     fn proof_id() {
         let (proof, public_input, vk) = proof_artifacts();
-        let all_data: Vec<u8> = vec![Vec::from(BITVM_PROOF_SYSTEM), proof, public_input, vk]
+        let all_data: Vec<u8> = vec![Vec::from(BITVM_PROOF_SYSTEM), proof, public_input, vk, Vec::from(NAMESPACE)]
             .into_iter()
             .flatten()
             .collect();
@@ -157,6 +158,7 @@ mod tests {
             proof,
             public_input,
             vk,
+            namespace: NAMESPACE.to_string(),
         }
     }
 
