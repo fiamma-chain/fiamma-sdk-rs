@@ -52,11 +52,11 @@ impl QueryClient {
 #[cfg(test)]
 mod tests {
     use super::QueryClient;
-    const NODE: &str = "http://13.231.104.23:9090";
+    const NODE: &str = "http://54.65.137.66:9090";
 
     #[tokio::test]
     async fn test_get_proof_data() {
-        let proof_id = "00e2af0c74cf8091cf1fd60c672698be7700a5ddfd1d94c21ec06df5bf82da80";
+        let proof_id = "1776686b821785672155f4f34a0cf0d088e721e3ec5ff32709a7cec1b5a3b669";
         let query_client = QueryClient::new(NODE);
         let proof_data = query_client.get_proof_data(proof_id).await;
         println!("proof_data: {:?}", proof_data);
@@ -64,7 +64,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_get_bitvm_challenge_data() {
-        let proof_id = "00e2af0c74cf8091cf1fd60c672698be7700a5ddfd1d94c21ec06df5bf82da80";
+        let proof_id = "1776686b821785672155f4f34a0cf0d088e721e3ec5ff32709a7cec1b5a3b669";
         let query_client = QueryClient::new(NODE);
         let bitvm_challenge_data = query_client.get_bitvm_challenge_data(proof_id).await;
         println!("bitvm_challenge_data: {:?}", bitvm_challenge_data);

@@ -111,10 +111,11 @@ mod tests {
     use sha2::{Digest, Sha256};
 
     const BITVM_PROOF_SYSTEM: &str = "GROTH16_BN254_BITVM";
+    const NAMESPACE: &str = "ZULU";
     const TEST_DATA: &str = "test-data";
     const SENDER_PRIVATE_KEY: &str =
-        "d25da18393e1e3be637cba299ff08621757a134911029abd8a52fb4a989d2f73";
-    const NODE: &str = "http://13.231.104.23:9090";
+        "59514b4e9c63b91cc9d3b6b882f1c5ee7449890c7c1116782670c71c96957897";
+    const NODE: &str = "http://54.65.137.66:9090";
     // const NODE: &str = "https://testnet-grpc.fiammachain.io";
     // grpcurl -v -d '{"address":"fiamma19fldhw0awjv2ag7dz0lr3d4qmnfkxz69rzxcdp"}' testnet-grpc.fiammachain.io:443 cosmos.auth.v1beta1.Query/Account
     // fiammad query tx --type=hash 04DD64900B9AB19D2FFB5EE0118BC4C96E3B5F44110E329412BD5EF8B722FADD --node tcp://13.231.104.23:26657 --chain-id fiamma-testnet-1
@@ -136,10 +137,16 @@ mod tests {
     #[test]
     fn proof_id() {
         let (proof, public_input, vk) = proof_artifacts();
-        let all_data: Vec<u8> = vec![Vec::from(BITVM_PROOF_SYSTEM), proof, public_input, vk]
-            .into_iter()
-            .flatten()
-            .collect();
+        let all_data: Vec<u8> = vec![
+            Vec::from(NAMESPACE),
+            Vec::from(BITVM_PROOF_SYSTEM),
+            proof,
+            public_input,
+            vk,
+        ]
+        .into_iter()
+        .flatten()
+        .collect();
 
         let mut hasher = Sha256::new();
         hasher.update(all_data);
@@ -157,6 +164,7 @@ mod tests {
             proof,
             public_input,
             vk,
+            namespace: NAMESPACE.to_string(),
         }
     }
 
@@ -168,7 +176,7 @@ mod tests {
         let tx_client = TxClient::new(SENDER_PRIVATE_KEY, NODE, fee, gas_limit);
         let submit_proof_msg = msg_submit_proof(wallet.account_id.clone());
         let resp = tx_client.submit_proof(submit_proof_msg).await.unwrap();
-        println!("resp: {:?}", resp);
+        println!("submit_proof resp: {:?}", resp);
     }
 
     #[tokio::test]
@@ -179,10 +187,10 @@ mod tests {
         let tx_client = TxClient::new(SENDER_PRIVATE_KEY, NODE, fee, gas_limit);
         let msg = MsgCreateStaker {
             creator: wallet.account_id.clone(),
-            staker_address: "fiammavaloper19fldhw0awjv2ag7dz0lr3d4qmnfkxz69vukt7x".to_string(),
+            staker_address: "fiammavaloper124lzt3g4axrqf8p58f6hs9uzdk056y3cey2m5r".to_string(),
         };
         let resp = tx_client.create_staker(msg).await;
-        println!("resp: {:?}", resp);
+        println!("create_staker resp: {:?}", resp);
     }
 
     #[tokio::test]
@@ -193,19 +201,19 @@ mod tests {
         let tx_client = TxClient::new(SENDER_PRIVATE_KEY, NODE, fee, gas_limit);
         let msg = MsgRemoveStaker {
             creator: wallet.account_id.clone(),
-            staker_address: "fiammavaloper19fldhw0awjv2ag7dz0lr3d4qmnfkxz69vukt7x".to_string(),
+            staker_address: "fiammavaloper124lzt3g4axrqf8p58f6hs9uzdk056y3cey2m5r".to_string(),
         };
         let resp = tx_client.remove_staker(msg).await;
-        println!("resp: {:?}", resp);
+        println!("remove_staker resp: {:?}", resp);
     }
 
     #[tokio::test]
     async fn test_get_tx() {
         let gas_limit = 80_000_000_u64;
         let fee = 2000_u128;
-        let tx_id = "DAFD01EB130B6497502920CA22FDC19E0898E2130748095F2579535095EF2539";
+        let tx_id = "FECF6B15F33A220A4ACAB850BD968BB8C6C16DD610C5294B19C2C91511E7EE44";
         let query_client = TxClient::new(SENDER_PRIVATE_KEY, NODE, fee, gas_limit);
         let tx = query_client.get_tx(tx_id).await;
-        println!("tx: {:?}", tx);
+        println!("get_tx tx: {:?}", tx);
     }
 }

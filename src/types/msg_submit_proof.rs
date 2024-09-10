@@ -8,6 +8,7 @@ pub struct MsgSubmitProof {
     pub proof: Vec<u8>,
     pub public_input: Vec<u8>,
     pub vk: Vec<u8>,
+    pub namespace: String,
 }
 
 impl Msg for MsgSubmitProof {
@@ -32,6 +33,7 @@ impl TryFrom<&ProtoMsgSubmitProof> for MsgSubmitProof {
             proof: proto.proof.clone(),
             public_input: proto.public_input.clone(),
             vk: proto.vk.clone(),
+            namespace: proto.namespace.parse()?,
         })
     }
 }
@@ -50,6 +52,7 @@ impl From<&MsgSubmitProof> for ProtoMsgSubmitProof {
             proof: msg.proof.clone(),
             public_input: msg.public_input.clone(),
             vk: msg.vk.clone(),
+            namespace: msg.namespace.to_string(),
         }
     }
 }
