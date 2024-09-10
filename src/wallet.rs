@@ -55,8 +55,8 @@ impl Wallet {
 mod tests {
     use super::Wallet;
 
-    const RPC: &str = "https://testnet-grpc.fiammachain.io";
-    const PRIVATE_KEY: &str = "424a0d5ff7c1c9ce116c2e4cc02f0e6c1beea5507f5828aefa5453b30cae52c1";
+    const RPC: &str = "http://54.65.137.66:9090";
+    const PRIVATE_KEY: &str = "59514b4e9c63b91cc9d3b6b882f1c5ee7449890c7c1116782670c71c96957897";
 
     #[tokio::test]
     async fn test_wallet() {

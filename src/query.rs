@@ -56,7 +56,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_get_proof_data() {
-        let proof_id = "ad6d525285d38ca83ddf34b74c2728dc35cda1dcf333975117aa0e4cc7dac724";
+        let proof_id = "1776686b821785672155f4f34a0cf0d088e721e3ec5ff32709a7cec1b5a3b669";
         let query_client = QueryClient::new(NODE);
         let proof_data = query_client.get_proof_data(proof_id).await;
         println!("proof_data: {:?}", proof_data);
@@ -64,7 +64,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_get_bitvm_challenge_data() {
-        let proof_id = "ad6d525285d38ca83ddf34b74c2728dc35cda1dcf333975117aa0e4cc7dac724";
+        let proof_id = "1776686b821785672155f4f34a0cf0d088e721e3ec5ff32709a7cec1b5a3b669";
         let query_client = QueryClient::new(NODE);
         let bitvm_challenge_data = query_client.get_bitvm_challenge_data(proof_id).await;
         println!("bitvm_challenge_data: {:?}", bitvm_challenge_data);

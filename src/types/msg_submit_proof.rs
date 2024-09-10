@@ -52,7 +52,7 @@ impl From<&MsgSubmitProof> for ProtoMsgSubmitProof {
             proof: msg.proof.clone(),
             public_input: msg.public_input.clone(),
             vk: msg.vk.clone(),
-            namespace:msg.namespace.to_string(),
+            namespace: msg.namespace.to_string(),
         }
     }
 }
