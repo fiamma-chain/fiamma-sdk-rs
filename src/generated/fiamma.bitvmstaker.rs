@@ -54,6 +54,28 @@ pub struct MsgUpdateCommitteeAddress {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MsgUpdateCommitteeAddressResponse {}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MsgRegisterVk {
+    #[prost(string, tag = "1")]
+    pub creator: ::prost::alloc::string::String,
+    #[prost(bytes = "vec", tag = "2")]
+    pub vk: ::prost::alloc::vec::Vec<u8>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MsgRegisterVkResponse {}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MsgRemoveVk {
+    #[prost(string, tag = "1")]
+    pub creator: ::prost::alloc::string::String,
+    #[prost(bytes = "vec", tag = "2")]
+    pub vk: ::prost::alloc::vec::Vec<u8>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MsgRemoveVkResponse {}
 /// Generated client implementations.
 pub mod msg_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -244,6 +266,56 @@ pub mod msg_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        pub async fn register_vk(
+            &mut self,
+            request: impl tonic::IntoRequest<super::MsgRegisterVk>,
+        ) -> std::result::Result<
+            tonic::Response<super::MsgRegisterVkResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/fiamma.bitvmstaker.Msg/RegisterVK",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("fiamma.bitvmstaker.Msg", "RegisterVK"));
+            self.inner.unary(req, path, codec).await
+        }
+        pub async fn remove_vk(
+            &mut self,
+            request: impl tonic::IntoRequest<super::MsgRemoveVk>,
+        ) -> std::result::Result<
+            tonic::Response<super::MsgRemoveVkResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/fiamma.bitvmstaker.Msg/RemoveVK",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("fiamma.bitvmstaker.Msg", "RemoveVK"));
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// Generated server implementations.
@@ -281,6 +353,20 @@ pub mod msg_server {
             request: tonic::Request<super::MsgUpdateCommitteeAddress>,
         ) -> std::result::Result<
             tonic::Response<super::MsgUpdateCommitteeAddressResponse>,
+            tonic::Status,
+        >;
+        async fn register_vk(
+            &self,
+            request: tonic::Request<super::MsgRegisterVk>,
+        ) -> std::result::Result<
+            tonic::Response<super::MsgRegisterVkResponse>,
+            tonic::Status,
+        >;
+        async fn remove_vk(
+            &self,
+            request: tonic::Request<super::MsgRemoveVk>,
+        ) -> std::result::Result<
+            tonic::Response<super::MsgRemoveVkResponse>,
             tonic::Status,
         >;
     }
@@ -527,6 +613,94 @@ pub mod msg_server {
                     let fut = async move {
                         let inner = inner.0;
                         let method = UpdateCommitteeAddressSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            )
+                            .apply_max_message_size_config(
+                                max_decoding_message_size,
+                                max_encoding_message_size,
+                            );
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/fiamma.bitvmstaker.Msg/RegisterVK" => {
+                    #[allow(non_camel_case_types)]
+                    struct RegisterVKSvc<T: Msg>(pub Arc<T>);
+                    impl<T: Msg> tonic::server::UnaryService<super::MsgRegisterVk>
+                    for RegisterVKSvc<T> {
+                        type Response = super::MsgRegisterVkResponse;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::MsgRegisterVk>,
+                        ) -> Self::Future {
+                            let inner = Arc::clone(&self.0);
+                            let fut = async move {
+                                <T as Msg>::register_vk(&inner, request).await
+                            };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let max_decoding_message_size = self.max_decoding_message_size;
+                    let max_encoding_message_size = self.max_encoding_message_size;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let inner = inner.0;
+                        let method = RegisterVKSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            )
+                            .apply_max_message_size_config(
+                                max_decoding_message_size,
+                                max_encoding_message_size,
+                            );
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/fiamma.bitvmstaker.Msg/RemoveVK" => {
+                    #[allow(non_camel_case_types)]
+                    struct RemoveVKSvc<T: Msg>(pub Arc<T>);
+                    impl<T: Msg> tonic::server::UnaryService<super::MsgRemoveVk>
+                    for RemoveVKSvc<T> {
+                        type Response = super::MsgRemoveVkResponse;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::MsgRemoveVk>,
+                        ) -> Self::Future {
+                            let inner = Arc::clone(&self.0);
+                            let fut = async move {
+                                <T as Msg>::remove_vk(&inner, request).await
+                            };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let max_decoding_message_size = self.max_decoding_message_size;
+                    let max_encoding_message_size = self.max_encoding_message_size;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let inner = inner.0;
+                        let method = RemoveVKSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = tonic::server::Grpc::new(codec)
                             .apply_compression_config(

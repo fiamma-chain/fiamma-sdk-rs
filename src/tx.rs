@@ -2,7 +2,7 @@
 
 use crate::{
     chain::*,
-    types::{MsgCreateStaker, MsgRemoveStaker, MsgSubmitProof},
+    types::{MsgCreateStaker, MsgRegisterVk, MsgRemoveStaker, MsgRemoveVk, MsgSubmitProof},
     wallet::Wallet,
 };
 use cosmos_sdk_proto::cosmos::{
@@ -50,6 +50,14 @@ impl TxClient {
     }
 
     pub async fn remove_staker(&self, msg: MsgRemoveStaker) -> Result<BroadcastTxResponse> {
+        self.construct_broadcast_tx(msg.to_any()?).await
+    }
+
+    pub async fn register_vk(&self, msg: MsgRegisterVk) -> Result<BroadcastTxResponse> {
+        self.construct_broadcast_tx(msg.to_any()?).await
+    }
+
+    pub async fn remove_vk(&self, msg: MsgRemoveVk) -> Result<BroadcastTxResponse> {
         self.construct_broadcast_tx(msg.to_any()?).await
     }
 

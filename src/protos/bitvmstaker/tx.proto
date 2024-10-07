@@ -16,6 +16,8 @@ service Msg {
   rpc CreateStaker           (MsgCreateStaker          ) returns (MsgCreateStakerResponse          );
   rpc RemoveStaker            (MsgRemoveStaker           ) returns (MsgRemoveStakerResponse           );
   rpc UpdateCommitteeAddress (MsgUpdateCommitteeAddress) returns (MsgUpdateCommitteeAddressResponse);
+  rpc RegisterVK              (MsgRegisterVk             ) returns (MsgRegisterVkResponse             );
+  rpc RemoveVK                (MsgRemoveVk              ) returns (MsgRemoveVkResponse              );
 }
 // MsgUpdateParams is the Msg/UpdateParams request type.
 message MsgUpdateParams {
@@ -50,3 +52,17 @@ message MsgUpdateCommitteeAddress {
   string new_committee_address = 2;
 }
 message MsgUpdateCommitteeAddressResponse {}
+
+message MsgRegisterVk {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  bytes vk = 2;
+}
+message MsgRegisterVkResponse {}
+
+message MsgRemoveVk {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator = 1;
+  bytes vk = 2;
+}
+message MsgRemoveVkResponse {}
