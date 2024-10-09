@@ -51,11 +51,11 @@ impl_name!(
 impl_name!(
     fiamma::bitvmstaker::MsgRegisterVk,
     "fiamma.bitvmstaker",
-    "MsgRegisterVk"
+    "MsgRegisterVK"
 );
 
 impl_name!(
     fiamma::bitvmstaker::MsgRemoveVk,
     "fiamma.bitvmstaker",
-    "MsgRemoveVk"
+    "MsgRemoveVK"
 );
