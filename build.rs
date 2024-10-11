@@ -42,6 +42,12 @@ impl_name!(
 );
 
 impl_name!(
+    fiamma::zkpverify::MsgSubmitCommunityVerification,
+    "fiamma.zkpverify",
+    "MsgSubmitCommunityVerification"
+);
+
+impl_name!(
     fiamma::bitvmstaker::MsgCreateStaker,
     "fiamma.bitvmstaker",
     "MsgCreateStaker"
