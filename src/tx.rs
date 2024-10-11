@@ -2,7 +2,10 @@
 
 use crate::{
     chain::*,
-    types::{MsgCreateStaker, MsgRegisterVK, MsgRemoveStaker, MsgRemoveVK, MsgSubmitProof},
+    types::{
+        MsgCreateStaker, MsgRegisterVK, MsgRemoveStaker, MsgRemoveVK,
+        MsgSubmitCommunityVerification, MsgSubmitProof,
+    },
     wallet::Wallet,
 };
 use cosmos_sdk_proto::cosmos::{
@@ -42,6 +45,13 @@ impl TxClient {
     }
 
     pub async fn submit_proof(&self, msg: MsgSubmitProof) -> Result<BroadcastTxResponse> {
+        self.construct_broadcast_tx(msg.to_any()?).await
+    }
+
+    pub async fn submit_community_verification(
+        &self,
+        msg: MsgSubmitCommunityVerification,
+    ) -> Result<BroadcastTxResponse> {
         self.construct_broadcast_tx(msg.to_any()?).await
     }
 
@@ -113,7 +123,7 @@ impl TxClient {
 
 #[cfg(test)]
 mod tests {
-    use super::{MsgCreateStaker, MsgRemoveStaker, MsgSubmitProof};
+    use super::{MsgCreateStaker, MsgRemoveStaker, MsgSubmitCommunityVerification, MsgSubmitProof};
     use crate::{tx::TxClient, wallet::Wallet};
     use cosmrs::AccountId;
     use sha2::{Digest, Sha256};
@@ -123,7 +133,7 @@ mod tests {
     const TEST_DATA: &str = "test-data";
     const SENDER_PRIVATE_KEY: &str =
         "0268ea4810f891f4a32266a2e8465db32b2705f49de16ee535993d7c4b92f936";
-    const NODE: &str = "http://54.65.137.66:9090";
+    const NODE: &str = "http://54.65.75.57:9090";
     // const NODE: &str = "https://testnet-grpc.fiammachain.io";
     // grpcurl -v -d '{"address":"fiamma19fldhw0awjv2ag7dz0lr3d4qmnfkxz69rzxcdp"}' testnet-grpc.fiammachain.io:443 cosmos.auth.v1beta1.Query/Account
     // fiammad query tx --type=hash 04DD64900B9AB19D2FFB5EE0118BC4C96E3B5F44110E329412BD5EF8B722FADD --node tcp://13.231.104.23:26657 --chain-id fiamma-testnet-1
@@ -185,6 +195,25 @@ mod tests {
         let submit_proof_msg = msg_submit_proof(wallet.account_id.clone());
         let resp = tx_client.submit_proof(submit_proof_msg).await.unwrap();
         println!("submit_proof resp: {:?}", resp);
+    }
+
+    #[tokio::test]
+    async fn test_submit_community_verification() {
+        let wallet = Wallet::new(SENDER_PRIVATE_KEY);
+        let gas_limit = 80_000_000_u64;
+        let fee = 2000_u128;
+        let tx_client = TxClient::new(SENDER_PRIVATE_KEY, NODE, fee, gas_limit);
+        let proof_id = "8a17276c37500fe1f0b277f21205592eac037b60f8a7021713ed2b99fe4f78f2";
+        let submit_community_verification_msg = MsgSubmitCommunityVerification {
+            creator: wallet.account_id.clone(),
+            proof_id: proof_id.to_string(),
+            verify_result: true,
+        };
+        let resp = tx_client
+            .submit_community_verification(submit_community_verification_msg)
+            .await
+            .unwrap();
+        println!("submit_community_verification resp: {:?}", resp);
     }
 
     #[tokio::test]
