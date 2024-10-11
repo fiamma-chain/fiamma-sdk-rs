@@ -119,7 +119,7 @@ mod tests {
     use sha2::{Digest, Sha256};
 
     const BITVM_PROOF_SYSTEM: &str = "GROTH16_BN254_BITVM";
-    const NAMESPACE: &str = "ZULU";
+    const NAMESPACE: &str = "test-namespace";
     const TEST_DATA: &str = "test-data";
     const SENDER_PRIVATE_KEY: &str =
         "59514b4e9c63b91cc9d3b6b882f1c5ee7449890c7c1116782670c71c96957897";
@@ -219,7 +219,7 @@ mod tests {
     async fn test_get_tx() {
         let gas_limit = 80_000_000_u64;
         let fee = 2000_u128;
-        let tx_id = "FECF6B15F33A220A4ACAB850BD968BB8C6C16DD610C5294B19C2C91511E7EE44";
+        let tx_id = "B2958AFE8692C8F746C1F461E146B33D997275037C3699F13AA0C082A0604E7F";
         let query_client = TxClient::new(SENDER_PRIVATE_KEY, NODE, fee, gas_limit);
         let tx = query_client.get_tx(tx_id).await;
         println!("get_tx tx: {:?}", tx);

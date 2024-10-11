@@ -2,7 +2,7 @@
 
 use crate::generated::fiamma::zkpverify::{
     query_client::QueryClient as ProtoQueryClient, BitVmChallengeData, ProofData,
-    QueryBitVmChallengeDataRequest, QueryProofDataRequest,
+    QueryBitVmChallengeDataRequest, QueryProofDataRequest, QueryVerifyResultRequest, VerifyResult,
 };
 use cosmrs::{ErrorReport, Result};
 
@@ -47,6 +47,21 @@ impl QueryClient {
             .ok_or(ErrorReport::msg("Empty bitvm challenge data in response"))?;
         Ok(bitvm_challenge_data)
     }
+
+    pub async fn get_verify_result(&self, proof_id: &str) -> Result<VerifyResult> {
+        let mut client = ProtoQueryClient::connect(self.rpc.clone()).await?;
+        let resp = client
+            .verify_result(QueryVerifyResultRequest {
+                proof_id: proof_id.to_string(),
+            })
+            .await?;
+        let verify_result = resp
+            .get_ref()
+            .clone()
+            .verify_result
+            .ok_or(ErrorReport::msg("Empty verify result data in response"))?;
+        Ok(verify_result)
+    }
 }
 
 #[cfg(test)]
@@ -56,7 +71,7 @@ mod tests {
 
     #[tokio::test]
     async fn test_get_proof_data() {
-        let proof_id = "1776686b821785672155f4f34a0cf0d088e721e3ec5ff32709a7cec1b5a3b669";
+        let proof_id = "8a17276c37500fe1f0b277f21205592eac037b60f8a7021713ed2b99fe4f78f2";
         let query_client = QueryClient::new(NODE);
         let proof_data = query_client.get_proof_data(proof_id).await;
         println!("proof_data: {:?}", proof_data);
@@ -64,9 +79,20 @@ mod tests {
 
     #[tokio::test]
     async fn test_get_bitvm_challenge_data() {
-        let proof_id = "1776686b821785672155f4f34a0cf0d088e721e3ec5ff32709a7cec1b5a3b669";
+        let proof_id = "8a17276c37500fe1f0b277f21205592eac037b60f8a7021713ed2b99fe4f78f2";
         let query_client = QueryClient::new(NODE);
         let bitvm_challenge_data = query_client.get_bitvm_challenge_data(proof_id).await;
         println!("bitvm_challenge_data: {:?}", bitvm_challenge_data);
+    }
+
+    #[tokio::test]
+    async fn test_get_verify_result() {
+        let proof_id = "8a17276c37500fe1f0b277f21205592eac037b60f8a7021713ed2b99fe4f78f2";
+        let query_client = QueryClient::new(NODE);
+        let get_verify_result = query_client.get_verify_result(proof_id).await;
+        println!(
+            "bitvm_challenget_verify_resultge_data: {:?}",
+            get_verify_result
+        );
     }
 }
