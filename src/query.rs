@@ -52,7 +52,7 @@ impl QueryClient {
 #[cfg(test)]
 mod tests {
     use super::QueryClient;
-    const NODE: &str = "http://54.65.137.66:9090";
+    const NODE: &str = "http://54.65.75.57:9090";
 
     #[tokio::test]
     async fn test_get_proof_data() {
