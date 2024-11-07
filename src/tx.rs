@@ -197,7 +197,7 @@ mod tests {
         let submit_proof_msg = msg_submit_proof(wallet.account_id.clone());
         // 1. submit proof
         let resp = tx_client.submit_proof(submit_proof_msg).await.unwrap();
-        
+
         // 2. sleep 6s wait for the proof to be verified
         tokio::time::sleep(tokio::time::Duration::from_secs(3)).await;
 
@@ -206,8 +206,11 @@ mod tests {
         let tx_result = tx_client.get_tx(&tx_hash).await.unwrap();
 
         // 4. check the tx is success
-        assert_eq!(tx_result.code, 0, "Transaction failed: {}", tx_result.raw_log);
-
+        assert_eq!(
+            tx_result.code, 0,
+            "Transaction failed: {}",
+            tx_result.raw_log
+        );
     }
 
     #[tokio::test]
