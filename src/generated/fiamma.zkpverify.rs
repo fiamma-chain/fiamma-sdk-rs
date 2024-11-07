@@ -69,7 +69,9 @@ pub struct VerifyResult {
 pub struct BitVmChallengeData {
     #[prost(bytes = "vec", tag = "1")]
     pub witness: ::prost::alloc::vec::Vec<u8>,
-    #[prost(string, tag = "2")]
+    #[prost(bytes = "vec", tag = "2")]
+    pub vk: ::prost::alloc::vec::Vec<u8>,
+    #[prost(string, tag = "3")]
     pub proposer: ::prost::alloc::string::String,
 }
 /// VerificationStatus is the verification status enum for the proof verification
@@ -107,9 +109,9 @@ impl VerificationStatus {
 #[repr(i32)]
 pub enum DataLocation {
     Fiamma = 0,
-    Nubitda = 1,
+    Nubit = 1,
     Celestia = 2,
-    Availda = 3,
+    Avail = 3,
 }
 impl DataLocation {
     /// String value of the enum field names used in the ProtoBuf definition.
@@ -119,18 +121,18 @@ impl DataLocation {
     pub fn as_str_name(&self) -> &'static str {
         match self {
             DataLocation::Fiamma => "FIAMMA",
-            DataLocation::Nubitda => "NUBITDA",
+            DataLocation::Nubit => "NUBIT",
             DataLocation::Celestia => "CELESTIA",
-            DataLocation::Availda => "AVAILDA",
+            DataLocation::Avail => "AVAIL",
         }
     }
     /// Creates an enum from field names used in the ProtoBuf definition.
     pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
         match value {
             "FIAMMA" => Some(Self::Fiamma),
-            "NUBITDA" => Some(Self::Nubitda),
+            "NUBIT" => Some(Self::Nubit),
             "CELESTIA" => Some(Self::Celestia),
-            "AVAILDA" => Some(Self::Availda),
+            "AVAIL" => Some(Self::Avail),
             _ => None,
         }
     }
