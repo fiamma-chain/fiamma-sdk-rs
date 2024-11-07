@@ -3,6 +3,165 @@
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Params {}
+/// DASubmissionResult is the data structure for the DA submission result
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DaSubmissionResult {
+    #[prost(string, tag = "1")]
+    pub proof_id: ::prost::alloc::string::String,
+    #[prost(enumeration = "DataLocation", tag = "2")]
+    pub data_location: i32,
+    #[prost(string, tag = "3")]
+    pub block_hash: ::prost::alloc::string::String,
+    #[prost(uint64, tag = "4")]
+    pub block_height: u64,
+    #[prost(string, tag = "5")]
+    pub tx_hash: ::prost::alloc::string::String,
+    #[prost(string, tag = "6")]
+    pub namespace: ::prost::alloc::string::String,
+}
+/// DASubmissionData is the data structure for the DA submission data
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DaSubmissionData {
+    #[prost(string, tag = "1")]
+    pub proof_id: ::prost::alloc::string::String,
+    #[prost(message, optional, tag = "2")]
+    pub proof_data: ::core::option::Option<ProofData>,
+}
+/// ProofData is the data structure for the proof verification request
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ProofData {
+    #[prost(enumeration = "ProofSystem", tag = "1")]
+    pub proof_system: i32,
+    #[prost(bytes = "vec", tag = "2")]
+    pub proof: ::prost::alloc::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "3")]
+    pub public_input: ::prost::alloc::vec::Vec<u8>,
+    #[prost(bytes = "vec", tag = "4")]
+    pub vk: ::prost::alloc::vec::Vec<u8>,
+    #[prost(enumeration = "DataLocation", tag = "5")]
+    pub data_location: i32,
+    #[prost(string, tag = "6")]
+    pub namespace: ::prost::alloc::string::String,
+}
+/// VerifyResult is the data structure for the proof verification result
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct VerifyResult {
+    #[prost(string, tag = "1")]
+    pub proof_id: ::prost::alloc::string::String,
+    #[prost(enumeration = "ProofSystem", tag = "2")]
+    pub proof_system: i32,
+    #[prost(bool, tag = "3")]
+    pub result: bool,
+    #[prost(enumeration = "VerificationStatus", tag = "4")]
+    pub status: i32,
+    #[prost(uint64, tag = "5")]
+    pub community_verification_count: u64,
+    #[prost(string, tag = "6")]
+    pub namespace: ::prost::alloc::string::String,
+}
+/// BitVMChallengeData is the data structure for the bitvm challenge data
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct BitVmChallengeData {
+    #[prost(bytes = "vec", tag = "1")]
+    pub witness: ::prost::alloc::vec::Vec<u8>,
+    #[prost(string, tag = "2")]
+    pub proposer: ::prost::alloc::string::String,
+}
+/// VerificationStatus is the verification status enum for the proof verification
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum VerificationStatus {
+    InitialValidation = 0,
+    SoftFinality = 1,
+    HardFinality = 2,
+}
+impl VerificationStatus {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            VerificationStatus::InitialValidation => "INITIAL_VALIDATION",
+            VerificationStatus::SoftFinality => "SOFT_FINALITY",
+            VerificationStatus::HardFinality => "HARD_FINALITY",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "INITIAL_VALIDATION" => Some(Self::InitialValidation),
+            "SOFT_FINALITY" => Some(Self::SoftFinality),
+            "HARD_FINALITY" => Some(Self::HardFinality),
+            _ => None,
+        }
+    }
+}
+/// DataLocation is the proof data location enum for the proof verification
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum DataLocation {
+    Fiamma = 0,
+    Nubitda = 1,
+    Celestia = 2,
+    Availda = 3,
+}
+impl DataLocation {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            DataLocation::Fiamma => "FIAMMA",
+            DataLocation::Nubitda => "NUBITDA",
+            DataLocation::Celestia => "CELESTIA",
+            DataLocation::Availda => "AVAILDA",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "FIAMMA" => Some(Self::Fiamma),
+            "NUBITDA" => Some(Self::Nubitda),
+            "CELESTIA" => Some(Self::Celestia),
+            "AVAILDA" => Some(Self::Availda),
+            _ => None,
+        }
+    }
+}
+/// ProofSystem is the proof system enum for the proof verification
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum ProofSystem {
+    Groth16Bn254Bitvm = 0,
+    FfplonkBn254Bitvm = 1,
+}
+impl ProofSystem {
+    /// String value of the enum field names used in the ProtoBuf definition.
+    ///
+    /// The values are not transformed in any way and thus are considered stable
+    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
+    pub fn as_str_name(&self) -> &'static str {
+        match self {
+            ProofSystem::Groth16Bn254Bitvm => "GROTH16_BN254_BITVM",
+            ProofSystem::FfplonkBn254Bitvm => "FFPLONK_BN254_BITVM",
+        }
+    }
+    /// Creates an enum from field names used in the ProtoBuf definition.
+    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
+        match value {
+            "GROTH16_BN254_BITVM" => Some(Self::Groth16Bn254Bitvm),
+            "FFPLONK_BN254_BITVM" => Some(Self::FfplonkBn254Bitvm),
+            _ => None,
+        }
+    }
+}
 /// MsgUpdateParams is the Msg/UpdateParams request type.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -11,7 +170,6 @@ pub struct MsgUpdateParams {
     /// overwritten).
     #[prost(string, tag = "1")]
     pub authority: ::prost::alloc::string::String,
-    /// params defines the module parameters to update.
     /// NOTE: All parameters must be supplied.
     #[prost(message, optional, tag = "2")]
     pub params: ::core::option::Option<Params>,
@@ -36,6 +194,8 @@ pub struct MsgSubmitProof {
     #[prost(bytes = "vec", tag = "5")]
     pub vk: ::prost::alloc::vec::Vec<u8>,
     #[prost(string, tag = "6")]
+    pub data_location: ::prost::alloc::string::String,
+    #[prost(string, tag = "7")]
     pub namespace: ::prost::alloc::string::String,
 }
 /// MsgSubmitProofResponse defines the response structure for executing MsgSubmitProof
@@ -61,6 +221,32 @@ pub struct MsgSubmitCommunityVerification {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MsgSubmitCommunityVerificationResponse {}
+/// MsgUpdateDASubmitter is the request type for updating the DA submitter address.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MsgUpdateDaSubmitter {
+    #[prost(string, tag = "1")]
+    pub creator: ::prost::alloc::string::String,
+    #[prost(string, tag = "2")]
+    pub da_submitter: ::prost::alloc::string::String,
+}
+/// MsgUpdateDASubmitterResponse defines the response structure for executing MsgUpdateDASubmitter
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MsgUpdateDaSubmitterResponse {}
+/// MsgUpdateDASubmissions is the request type for updating the DA submission result.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MsgUpdateDaSubmissionResults {
+    #[prost(string, tag = "1")]
+    pub creator: ::prost::alloc::string::String,
+    #[prost(message, repeated, tag = "2")]
+    pub da_submission_result: ::prost::alloc::vec::Vec<DaSubmissionResult>,
+}
+/// MsgUpdateDASubmissionResultsResponse defines the response structure for executing MsgUpdateDASubmissionResults
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct MsgUpdateDaSubmissionResultsResponse {}
 /// Generated client implementations.
 pub mod msg_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -231,6 +417,60 @@ pub mod msg_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        /// UpdateDASubmitter defines a (zkpverify) operation for updating the DA submitter address.
+        pub async fn update_da_submitter(
+            &mut self,
+            request: impl tonic::IntoRequest<super::MsgUpdateDaSubmitter>,
+        ) -> std::result::Result<
+            tonic::Response<super::MsgUpdateDaSubmitterResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/fiamma.zkpverify.Msg/UpdateDASubmitter",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("fiamma.zkpverify.Msg", "UpdateDASubmitter"));
+            self.inner.unary(req, path, codec).await
+        }
+        /// UpdateDASubmissionResults defines a (zkpverify) operation for updating the DA submission result.
+        pub async fn update_da_submission_results(
+            &mut self,
+            request: impl tonic::IntoRequest<super::MsgUpdateDaSubmissionResults>,
+        ) -> std::result::Result<
+            tonic::Response<super::MsgUpdateDaSubmissionResultsResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/fiamma.zkpverify.Msg/UpdateDASubmissionResults",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(
+                    GrpcMethod::new("fiamma.zkpverify.Msg", "UpdateDASubmissionResults"),
+                );
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// Generated server implementations.
@@ -263,6 +503,22 @@ pub mod msg_server {
             request: tonic::Request<super::MsgSubmitCommunityVerification>,
         ) -> std::result::Result<
             tonic::Response<super::MsgSubmitCommunityVerificationResponse>,
+            tonic::Status,
+        >;
+        /// UpdateDASubmitter defines a (zkpverify) operation for updating the DA submitter address.
+        async fn update_da_submitter(
+            &self,
+            request: tonic::Request<super::MsgUpdateDaSubmitter>,
+        ) -> std::result::Result<
+            tonic::Response<super::MsgUpdateDaSubmitterResponse>,
+            tonic::Status,
+        >;
+        /// UpdateDASubmissionResults defines a (zkpverify) operation for updating the DA submission result.
+        async fn update_da_submission_results(
+            &self,
+            request: tonic::Request<super::MsgUpdateDaSubmissionResults>,
+        ) -> std::result::Result<
+            tonic::Response<super::MsgUpdateDaSubmissionResultsResponse>,
             tonic::Status,
         >;
     }
@@ -483,6 +739,97 @@ pub mod msg_server {
                     };
                     Box::pin(fut)
                 }
+                "/fiamma.zkpverify.Msg/UpdateDASubmitter" => {
+                    #[allow(non_camel_case_types)]
+                    struct UpdateDASubmitterSvc<T: Msg>(pub Arc<T>);
+                    impl<T: Msg> tonic::server::UnaryService<super::MsgUpdateDaSubmitter>
+                    for UpdateDASubmitterSvc<T> {
+                        type Response = super::MsgUpdateDaSubmitterResponse;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::MsgUpdateDaSubmitter>,
+                        ) -> Self::Future {
+                            let inner = Arc::clone(&self.0);
+                            let fut = async move {
+                                <T as Msg>::update_da_submitter(&inner, request).await
+                            };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let max_decoding_message_size = self.max_decoding_message_size;
+                    let max_encoding_message_size = self.max_encoding_message_size;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let inner = inner.0;
+                        let method = UpdateDASubmitterSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            )
+                            .apply_max_message_size_config(
+                                max_decoding_message_size,
+                                max_encoding_message_size,
+                            );
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/fiamma.zkpverify.Msg/UpdateDASubmissionResults" => {
+                    #[allow(non_camel_case_types)]
+                    struct UpdateDASubmissionResultsSvc<T: Msg>(pub Arc<T>);
+                    impl<
+                        T: Msg,
+                    > tonic::server::UnaryService<super::MsgUpdateDaSubmissionResults>
+                    for UpdateDASubmissionResultsSvc<T> {
+                        type Response = super::MsgUpdateDaSubmissionResultsResponse;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::MsgUpdateDaSubmissionResults>,
+                        ) -> Self::Future {
+                            let inner = Arc::clone(&self.0);
+                            let fut = async move {
+                                <T as Msg>::update_da_submission_results(&inner, request)
+                                    .await
+                            };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let max_decoding_message_size = self.max_decoding_message_size;
+                    let max_encoding_message_size = self.max_encoding_message_size;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let inner = inner.0;
+                        let method = UpdateDASubmissionResultsSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            )
+                            .apply_max_message_size_config(
+                                max_decoding_message_size,
+                                max_encoding_message_size,
+                            );
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
                 _ => {
                     Box::pin(async move {
                         Ok(
@@ -522,152 +869,6 @@ pub mod msg_server {
     }
     impl<T: Msg> tonic::server::NamedService for MsgServer<T> {
         const NAME: &'static str = "fiamma.zkpverify.Msg";
-    }
-}
-/// ProofData is the data structure for the proof verification request
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ProofData {
-    #[prost(enumeration = "ProofSystem", tag = "1")]
-    pub proof_system: i32,
-    #[prost(bytes = "vec", tag = "2")]
-    pub proof: ::prost::alloc::vec::Vec<u8>,
-    #[prost(bytes = "vec", tag = "3")]
-    pub public_input: ::prost::alloc::vec::Vec<u8>,
-    #[prost(bytes = "vec", tag = "4")]
-    pub vk: ::prost::alloc::vec::Vec<u8>,
-    #[prost(string, tag = "5")]
-    pub namespace: ::prost::alloc::string::String,
-}
-/// VerifyResult is the data structure for the proof verification result
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct VerifyResult {
-    #[prost(string, tag = "1")]
-    pub proof_id: ::prost::alloc::string::String,
-    #[prost(enumeration = "ProofSystem", tag = "2")]
-    pub proof_system: i32,
-    #[prost(string, tag = "3")]
-    pub data_commitment: ::prost::alloc::string::String,
-    #[prost(enumeration = "DataLocation", tag = "4")]
-    pub data_location: i32,
-    #[prost(bool, tag = "5")]
-    pub result: bool,
-    #[prost(enumeration = "VerificationStatus", tag = "6")]
-    pub status: i32,
-    #[prost(uint64, tag = "7")]
-    pub community_verification_count: u64,
-    #[prost(string, tag = "8")]
-    pub namespace: ::prost::alloc::string::String,
-}
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct BitVmChallengeData {
-    #[prost(bool, tag = "1")]
-    pub verify_result: bool,
-    #[prost(bytes = "vec", tag = "2")]
-    pub witness: ::prost::alloc::vec::Vec<u8>,
-    #[prost(bytes = "vec", tag = "3")]
-    pub vk: ::prost::alloc::vec::Vec<u8>,
-    #[prost(bytes = "vec", tag = "4")]
-    pub public_input: ::prost::alloc::vec::Vec<u8>,
-    #[prost(string, tag = "5")]
-    pub proposer: ::prost::alloc::string::String,
-}
-/// VerificationStatus is the verification status enum for the proof verification
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum VerificationStatus {
-    InitialValidation = 0,
-    CommunityValidation = 1,
-    DefinitiveValidation = 2,
-}
-impl VerificationStatus {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            VerificationStatus::InitialValidation => "INITIAL_VALIDATION",
-            VerificationStatus::CommunityValidation => "COMMUNITY_VALIDATION",
-            VerificationStatus::DefinitiveValidation => "DEFINITIVE_VALIDATION",
-        }
-    }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "INITIAL_VALIDATION" => Some(Self::InitialValidation),
-            "COMMUNITY_VALIDATION" => Some(Self::CommunityValidation),
-            "DEFINITIVE_VALIDATION" => Some(Self::DefinitiveValidation),
-            _ => None,
-        }
-    }
-}
-/// DataLocation is the proof data location enum for the proof verification
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum DataLocation {
-    Fiamma = 0,
-    Nubitda = 1,
-    Availda = 2,
-}
-impl DataLocation {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            DataLocation::Fiamma => "FIAMMA",
-            DataLocation::Nubitda => "NUBITDA",
-            DataLocation::Availda => "AVAILDA",
-        }
-    }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "FIAMMA" => Some(Self::Fiamma),
-            "NUBITDA" => Some(Self::Nubitda),
-            "AVAILDA" => Some(Self::Availda),
-            _ => None,
-        }
-    }
-}
-/// ProofSystem is the proof system enum for the proof verification
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum ProofSystem {
-    Groth16Bn254Bitvm = 0,
-    PlonkBn254 = 1,
-    PlonkBls12381 = 2,
-    Groth16Bn254 = 3,
-    Sp1 = 4,
-}
-impl ProofSystem {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            ProofSystem::Groth16Bn254Bitvm => "GROTH16_BN254_BITVM",
-            ProofSystem::PlonkBn254 => "PLONK_BN254",
-            ProofSystem::PlonkBls12381 => "PLONK_BLS12_381",
-            ProofSystem::Groth16Bn254 => "GROTH16_BN254",
-            ProofSystem::Sp1 => "SP1",
-        }
-    }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "GROTH16_BN254_BITVM" => Some(Self::Groth16Bn254Bitvm),
-            "PLONK_BN254" => Some(Self::PlonkBn254),
-            "PLONK_BLS12_381" => Some(Self::PlonkBls12381),
-            "GROTH16_BN254" => Some(Self::Groth16Bn254),
-            "SP1" => Some(Self::Sp1),
-            _ => None,
-        }
     }
 }
 /// QueryParamsRequest is request type for the Query/Params RPC method.
@@ -734,22 +935,6 @@ pub struct QueryVerifyResultResponse {
     #[prost(message, optional, tag = "1")]
     pub verify_result: ::core::option::Option<VerifyResult>,
 }
-/// QueryBitVMChallengeDataRequest is request type for the Query/BitVMChallengeData RPC
-/// method.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct QueryBitVmChallengeDataRequest {
-    #[prost(string, tag = "1")]
-    pub proof_id: ::prost::alloc::string::String,
-}
-/// QueryBitVMChallengeDataResponse is response type for the Query/BitVMChallengeData RPC
-/// method.
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct QueryBitVmChallengeDataResponse {
-    #[prost(message, optional, tag = "1")]
-    pub bitvm_challenge_data: ::core::option::Option<BitVmChallengeData>,
-}
 /// QueryVerifyResultsByNamespaceRequest is the request type for the Query/VerifyResultsByNamespace RPC method.
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -793,6 +978,75 @@ pub struct QueryPendingProofByNamespaceResponse {
     pub pagination: ::core::option::Option<
         super::super::cosmos::base::query::v1beta1::PageResponse,
     >,
+}
+/// QueryDASubmitterRequest is request type for the Query/DASubmitter RPC method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryDaSubmitterRequest {}
+/// QueryDASubmitterResponse is response type for the Query/DASubmitter RPC method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryDaSubmitterResponse {
+    #[prost(string, tag = "1")]
+    pub da_submitter: ::prost::alloc::string::String,
+}
+/// QueryDASubmissionQueueRequest is request type for the Query/DASubmissionQueue RPC method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryDaSubmissionQueueRequest {
+    #[prost(message, optional, tag = "1")]
+    pub pagination: ::core::option::Option<
+        super::super::cosmos::base::query::v1beta1::PageRequest,
+    >,
+}
+/// QueryDASubmissionQueueResponse is response type for the Query/DASubmissionQueue RPC method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryDaSubmissionQueueResponse {
+    #[prost(message, repeated, tag = "1")]
+    pub da_submission_data: ::prost::alloc::vec::Vec<DaSubmissionData>,
+    #[prost(message, optional, tag = "2")]
+    pub pagination: ::core::option::Option<
+        super::super::cosmos::base::query::v1beta1::PageResponse,
+    >,
+}
+/// QueryBitVMChallengeDataRequest is request type for the Query/BitVMChallengeData RPC method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryBitVmChallengeDataRequest {
+    #[prost(string, tag = "1")]
+    pub proof_id: ::prost::alloc::string::String,
+}
+/// QueryBitVMChallengeDataResponse is response type for the Query/BitVMChallengeData RPC method.
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryBitVmChallengeDataResponse {
+    #[prost(message, optional, tag = "1")]
+    pub bitvm_challenge_data: ::core::option::Option<BitVmChallengeData>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryDaSubmissionDataRequest {
+    #[prost(string, tag = "1")]
+    pub proof_id: ::prost::alloc::string::String,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryDaSubmissionDataResponse {
+    #[prost(message, optional, tag = "1")]
+    pub da_submission_data: ::core::option::Option<DaSubmissionData>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryDaSubmissionResultRequest {
+    #[prost(string, tag = "1")]
+    pub proof_id: ::prost::alloc::string::String,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryDaSubmissionResultResponse {
+    #[prost(message, optional, tag = "1")]
+    pub da_submission_result: ::core::option::Option<DaSubmissionResult>,
 }
 /// Generated client implementations.
 pub mod query_client {
@@ -983,32 +1237,6 @@ pub mod query_client {
                 .insert(GrpcMethod::new("fiamma.zkpverify.Query", "VerifyResult"));
             self.inner.unary(req, path, codec).await
         }
-        /// Queries bitvm witness by proof id
-        pub async fn bit_vm_challenge_data(
-            &mut self,
-            request: impl tonic::IntoRequest<super::QueryBitVmChallengeDataRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::QueryBitVmChallengeDataResponse>,
-            tonic::Status,
-        > {
-            self.inner
-                .ready()
-                .await
-                .map_err(|e| {
-                    tonic::Status::new(
-                        tonic::Code::Unknown,
-                        format!("Service was not ready: {}", e.into()),
-                    )
-                })?;
-            let codec = tonic::codec::ProstCodec::default();
-            let path = http::uri::PathAndQuery::from_static(
-                "/fiamma.zkpverify.Query/BitVMChallengeData",
-            );
-            let mut req = request.into_request();
-            req.extensions_mut()
-                .insert(GrpcMethod::new("fiamma.zkpverify.Query", "BitVMChallengeData"));
-            self.inner.unary(req, path, codec).await
-        }
         /// Queries a list of VerifyResult items by namespace.
         pub async fn verify_results_by_namespace(
             &mut self,
@@ -1065,6 +1293,131 @@ pub mod query_client {
                 );
             self.inner.unary(req, path, codec).await
         }
+        pub async fn da_submitter(
+            &mut self,
+            request: impl tonic::IntoRequest<super::QueryDaSubmitterRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryDaSubmitterResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/fiamma.zkpverify.Query/DASubmitter",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("fiamma.zkpverify.Query", "DASubmitter"));
+            self.inner.unary(req, path, codec).await
+        }
+        pub async fn da_submission_queue(
+            &mut self,
+            request: impl tonic::IntoRequest<super::QueryDaSubmissionQueueRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryDaSubmissionQueueResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/fiamma.zkpverify.Query/DASubmissionQueue",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("fiamma.zkpverify.Query", "DASubmissionQueue"));
+            self.inner.unary(req, path, codec).await
+        }
+        pub async fn bit_vm_challenge_data(
+            &mut self,
+            request: impl tonic::IntoRequest<super::QueryBitVmChallengeDataRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryBitVmChallengeDataResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/fiamma.zkpverify.Query/BitVMChallengeData",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("fiamma.zkpverify.Query", "BitVMChallengeData"));
+            self.inner.unary(req, path, codec).await
+        }
+        pub async fn da_submission_data(
+            &mut self,
+            request: impl tonic::IntoRequest<super::QueryDaSubmissionDataRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryDaSubmissionDataResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/fiamma.zkpverify.Query/DaSubmissionData",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("fiamma.zkpverify.Query", "DaSubmissionData"));
+            self.inner.unary(req, path, codec).await
+        }
+        pub async fn da_submission_result(
+            &mut self,
+            request: impl tonic::IntoRequest<super::QueryDaSubmissionResultRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryDaSubmissionResultResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/fiamma.zkpverify.Query/DaSubmissionResult",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("fiamma.zkpverify.Query", "DaSubmissionResult"));
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// Generated server implementations.
@@ -1105,14 +1458,6 @@ pub mod query_server {
             tonic::Response<super::QueryVerifyResultResponse>,
             tonic::Status,
         >;
-        /// Queries bitvm witness by proof id
-        async fn bit_vm_challenge_data(
-            &self,
-            request: tonic::Request<super::QueryBitVmChallengeDataRequest>,
-        ) -> std::result::Result<
-            tonic::Response<super::QueryBitVmChallengeDataResponse>,
-            tonic::Status,
-        >;
         /// Queries a list of VerifyResult items by namespace.
         async fn verify_results_by_namespace(
             &self,
@@ -1127,6 +1472,41 @@ pub mod query_server {
             request: tonic::Request<super::QueryPendingProofByNamespaceRequest>,
         ) -> std::result::Result<
             tonic::Response<super::QueryPendingProofByNamespaceResponse>,
+            tonic::Status,
+        >;
+        async fn da_submitter(
+            &self,
+            request: tonic::Request<super::QueryDaSubmitterRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryDaSubmitterResponse>,
+            tonic::Status,
+        >;
+        async fn da_submission_queue(
+            &self,
+            request: tonic::Request<super::QueryDaSubmissionQueueRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryDaSubmissionQueueResponse>,
+            tonic::Status,
+        >;
+        async fn bit_vm_challenge_data(
+            &self,
+            request: tonic::Request<super::QueryBitVmChallengeDataRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryBitVmChallengeDataResponse>,
+            tonic::Status,
+        >;
+        async fn da_submission_data(
+            &self,
+            request: tonic::Request<super::QueryDaSubmissionDataRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryDaSubmissionDataResponse>,
+            tonic::Status,
+        >;
+        async fn da_submission_result(
+            &self,
+            request: tonic::Request<super::QueryDaSubmissionResultRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryDaSubmissionResultResponse>,
             tonic::Status,
         >;
     }
@@ -1392,54 +1772,6 @@ pub mod query_server {
                     };
                     Box::pin(fut)
                 }
-                "/fiamma.zkpverify.Query/BitVMChallengeData" => {
-                    #[allow(non_camel_case_types)]
-                    struct BitVMChallengeDataSvc<T: Query>(pub Arc<T>);
-                    impl<
-                        T: Query,
-                    > tonic::server::UnaryService<super::QueryBitVmChallengeDataRequest>
-                    for BitVMChallengeDataSvc<T> {
-                        type Response = super::QueryBitVmChallengeDataResponse;
-                        type Future = BoxFuture<
-                            tonic::Response<Self::Response>,
-                            tonic::Status,
-                        >;
-                        fn call(
-                            &mut self,
-                            request: tonic::Request<
-                                super::QueryBitVmChallengeDataRequest,
-                            >,
-                        ) -> Self::Future {
-                            let inner = Arc::clone(&self.0);
-                            let fut = async move {
-                                <T as Query>::bit_vm_challenge_data(&inner, request).await
-                            };
-                            Box::pin(fut)
-                        }
-                    }
-                    let accept_compression_encodings = self.accept_compression_encodings;
-                    let send_compression_encodings = self.send_compression_encodings;
-                    let max_decoding_message_size = self.max_decoding_message_size;
-                    let max_encoding_message_size = self.max_encoding_message_size;
-                    let inner = self.inner.clone();
-                    let fut = async move {
-                        let inner = inner.0;
-                        let method = BitVMChallengeDataSvc(inner);
-                        let codec = tonic::codec::ProstCodec::default();
-                        let mut grpc = tonic::server::Grpc::new(codec)
-                            .apply_compression_config(
-                                accept_compression_encodings,
-                                send_compression_encodings,
-                            )
-                            .apply_max_message_size_config(
-                                max_decoding_message_size,
-                                max_encoding_message_size,
-                            );
-                        let res = grpc.unary(method, req).await;
-                        Ok(res)
-                    };
-                    Box::pin(fut)
-                }
                 "/fiamma.zkpverify.Query/VerifyResultsByNamespace" => {
                     #[allow(non_camel_case_types)]
                     struct VerifyResultsByNamespaceSvc<T: Query>(pub Arc<T>);
@@ -1525,6 +1857,240 @@ pub mod query_server {
                     let fut = async move {
                         let inner = inner.0;
                         let method = PendingProofByNamespaceSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            )
+                            .apply_max_message_size_config(
+                                max_decoding_message_size,
+                                max_encoding_message_size,
+                            );
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/fiamma.zkpverify.Query/DASubmitter" => {
+                    #[allow(non_camel_case_types)]
+                    struct DASubmitterSvc<T: Query>(pub Arc<T>);
+                    impl<
+                        T: Query,
+                    > tonic::server::UnaryService<super::QueryDaSubmitterRequest>
+                    for DASubmitterSvc<T> {
+                        type Response = super::QueryDaSubmitterResponse;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::QueryDaSubmitterRequest>,
+                        ) -> Self::Future {
+                            let inner = Arc::clone(&self.0);
+                            let fut = async move {
+                                <T as Query>::da_submitter(&inner, request).await
+                            };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let max_decoding_message_size = self.max_decoding_message_size;
+                    let max_encoding_message_size = self.max_encoding_message_size;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let inner = inner.0;
+                        let method = DASubmitterSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            )
+                            .apply_max_message_size_config(
+                                max_decoding_message_size,
+                                max_encoding_message_size,
+                            );
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/fiamma.zkpverify.Query/DASubmissionQueue" => {
+                    #[allow(non_camel_case_types)]
+                    struct DASubmissionQueueSvc<T: Query>(pub Arc<T>);
+                    impl<
+                        T: Query,
+                    > tonic::server::UnaryService<super::QueryDaSubmissionQueueRequest>
+                    for DASubmissionQueueSvc<T> {
+                        type Response = super::QueryDaSubmissionQueueResponse;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::QueryDaSubmissionQueueRequest>,
+                        ) -> Self::Future {
+                            let inner = Arc::clone(&self.0);
+                            let fut = async move {
+                                <T as Query>::da_submission_queue(&inner, request).await
+                            };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let max_decoding_message_size = self.max_decoding_message_size;
+                    let max_encoding_message_size = self.max_encoding_message_size;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let inner = inner.0;
+                        let method = DASubmissionQueueSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            )
+                            .apply_max_message_size_config(
+                                max_decoding_message_size,
+                                max_encoding_message_size,
+                            );
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/fiamma.zkpverify.Query/BitVMChallengeData" => {
+                    #[allow(non_camel_case_types)]
+                    struct BitVMChallengeDataSvc<T: Query>(pub Arc<T>);
+                    impl<
+                        T: Query,
+                    > tonic::server::UnaryService<super::QueryBitVmChallengeDataRequest>
+                    for BitVMChallengeDataSvc<T> {
+                        type Response = super::QueryBitVmChallengeDataResponse;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<
+                                super::QueryBitVmChallengeDataRequest,
+                            >,
+                        ) -> Self::Future {
+                            let inner = Arc::clone(&self.0);
+                            let fut = async move {
+                                <T as Query>::bit_vm_challenge_data(&inner, request).await
+                            };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let max_decoding_message_size = self.max_decoding_message_size;
+                    let max_encoding_message_size = self.max_encoding_message_size;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let inner = inner.0;
+                        let method = BitVMChallengeDataSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            )
+                            .apply_max_message_size_config(
+                                max_decoding_message_size,
+                                max_encoding_message_size,
+                            );
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/fiamma.zkpverify.Query/DaSubmissionData" => {
+                    #[allow(non_camel_case_types)]
+                    struct DaSubmissionDataSvc<T: Query>(pub Arc<T>);
+                    impl<
+                        T: Query,
+                    > tonic::server::UnaryService<super::QueryDaSubmissionDataRequest>
+                    for DaSubmissionDataSvc<T> {
+                        type Response = super::QueryDaSubmissionDataResponse;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::QueryDaSubmissionDataRequest>,
+                        ) -> Self::Future {
+                            let inner = Arc::clone(&self.0);
+                            let fut = async move {
+                                <T as Query>::da_submission_data(&inner, request).await
+                            };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let max_decoding_message_size = self.max_decoding_message_size;
+                    let max_encoding_message_size = self.max_encoding_message_size;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let inner = inner.0;
+                        let method = DaSubmissionDataSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            )
+                            .apply_max_message_size_config(
+                                max_decoding_message_size,
+                                max_encoding_message_size,
+                            );
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/fiamma.zkpverify.Query/DaSubmissionResult" => {
+                    #[allow(non_camel_case_types)]
+                    struct DaSubmissionResultSvc<T: Query>(pub Arc<T>);
+                    impl<
+                        T: Query,
+                    > tonic::server::UnaryService<super::QueryDaSubmissionResultRequest>
+                    for DaSubmissionResultSvc<T> {
+                        type Response = super::QueryDaSubmissionResultResponse;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<
+                                super::QueryDaSubmissionResultRequest,
+                            >,
+                        ) -> Self::Future {
+                            let inner = Arc::clone(&self.0);
+                            let fut = async move {
+                                <T as Query>::da_submission_result(&inner, request).await
+                            };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let max_decoding_message_size = self.max_decoding_message_size;
+                    let max_encoding_message_size = self.max_encoding_message_size;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let inner = inner.0;
+                        let method = DaSubmissionResultSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = tonic::server::Grpc::new(codec)
                             .apply_compression_config(

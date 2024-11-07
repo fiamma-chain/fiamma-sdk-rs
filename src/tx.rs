@@ -131,9 +131,10 @@ mod tests {
     const BITVM_PROOF_SYSTEM: &str = "GROTH16_BN254_BITVM";
     const NAMESPACE: &str = "test-namespace";
     const TEST_DATA: &str = "test-data";
+    const DATA_LOCATION: &str = "FIAMMA";
     const SENDER_PRIVATE_KEY: &str =
-        "0268ea4810f891f4a32266a2e8465db32b2705f49de16ee535993d7c4b92f936";
-    const NODE: &str = "http://54.65.75.57:9090";
+        "7ae58f95b0f15c999f77488fa0fbebbd4acbe2d12948dcd1729b07ee8f3051e8";
+    const NODE: &str = "http://127.0.0.1:9090";
     // const NODE: &str = "https://testnet-grpc.fiammachain.io";
     // grpcurl -v -d '{"address":"fiamma19fldhw0awjv2ag7dz0lr3d4qmnfkxz69rzxcdp"}' testnet-grpc.fiammachain.io:443 cosmos.auth.v1beta1.Query/Account
     // fiammad query tx --type=hash 04DD64900B9AB19D2FFB5EE0118BC4C96E3B5F44110E329412BD5EF8B722FADD --node tcp://13.231.104.23:26657 --chain-id fiamma-testnet-1
@@ -183,6 +184,7 @@ mod tests {
             public_input,
             vk,
             namespace: NAMESPACE.to_string(),
+            data_location: DATA_LOCATION.to_string(),
         }
     }
 
@@ -193,8 +195,19 @@ mod tests {
         let fee = 2000_u128;
         let tx_client = TxClient::new(SENDER_PRIVATE_KEY, NODE, fee, gas_limit);
         let submit_proof_msg = msg_submit_proof(wallet.account_id.clone());
+        // 1. submit proof
         let resp = tx_client.submit_proof(submit_proof_msg).await.unwrap();
-        println!("submit_proof resp: {:?}", resp);
+        
+        // 2. sleep 6s wait for the proof to be verified
+        tokio::time::sleep(tokio::time::Duration::from_secs(3)).await;
+
+        // 3. query the tx result
+        let tx_hash = resp.tx_response.unwrap().txhash;
+        let tx_result = tx_client.get_tx(&tx_hash).await.unwrap();
+
+        // 4. check the tx is success
+        assert_eq!(tx_result.code, 0, "Transaction failed: {}", tx_result.raw_log);
+
     }
 
     #[tokio::test]

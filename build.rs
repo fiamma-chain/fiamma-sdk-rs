@@ -75,10 +75,10 @@ impl_name!(
     let out_dir = "src/generated";
     tonic_build::configure().out_dir(out_dir).compile(
         &[
-            "src/protos/zkpverify/tx.proto",
-            "src/protos/zkpverify/query.proto",
-            "src/protos/bitvmstaker/tx.proto",
-            "src/protos/bitvmstaker/query.proto",
+            "src/protos/fiamma/zkpverify/tx.proto",
+            "src/protos/fiamma/zkpverify/query.proto",
+            "src/protos/fiamma/bitvmstaker/tx.proto",
+            "src/protos/fiamma/bitvmstaker/query.proto",
         ],
         &["src/protos", "src/protos/third_party"],
     )?;
