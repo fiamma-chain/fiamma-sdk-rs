@@ -1,11 +1,13 @@
 #![allow(dead_code)]
 
 use crate::generated::fiamma::zkpverify::{
-    query_client::QueryClient as ProtoQueryClient, BitVmChallengeData, ProofData,
-    QueryBitVmChallengeDataRequest, QueryPendingProofByNamespaceRequest, QueryPendingProofRequest,
+    query_client::QueryClient as ProtoQueryClient, BitVmChallengeData, DaSubmissionData,
+    DaSubmissionResult, ProofData, QueryBitVmChallengeDataRequest, QueryDaSubmissionDataRequest,
+    QueryDaSubmissionResultRequest, QueryPendingProofByNamespaceRequest, QueryPendingProofRequest,
     QueryProofDataRequest, QueryVerifyResultRequest, QueryVerifyResultsByNamespaceRequest,
     VerifyResult,
 };
+
 use cosmrs::{ErrorReport, Result};
 
 #[derive(Debug, Clone)]
@@ -115,6 +117,36 @@ impl QueryClient {
             ));
         }
         Ok(pending_proofs)
+    }
+
+    pub async fn get_da_submission_data(&self, proof_id: &str) -> Result<DaSubmissionData> {
+        let mut client = ProtoQueryClient::connect(self.rpc.clone()).await?;
+        let resp = client
+            .da_submission_data(QueryDaSubmissionDataRequest {
+                proof_id: proof_id.to_string(),
+            })
+            .await?;
+        let da_submission_data = resp
+            .get_ref()
+            .clone()
+            .da_submission_data
+            .ok_or(ErrorReport::msg("Empty da submission data in response"))?;
+        Ok(da_submission_data)
+    }
+
+    pub async fn get_da_submission_result(&self, proof_id: &str) -> Result<DaSubmissionResult> {
+        let mut client = ProtoQueryClient::connect(self.rpc.clone()).await?;
+        let resp = client
+            .da_submission_result(QueryDaSubmissionResultRequest {
+                proof_id: proof_id.to_string(),
+            })
+            .await?;
+        let da_submission_result = resp
+            .get_ref()
+            .clone()
+            .da_submission_result
+            .ok_or(ErrorReport::msg("Empty da submission result in response"))?;
+        Ok(da_submission_result)
     }
 }
 
