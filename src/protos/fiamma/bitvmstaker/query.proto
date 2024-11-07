@@ -1,12 +1,16 @@
 syntax = "proto3";
+
 package fiamma.bitvmstaker;
+
 import "amino/amino.proto";
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
-import "bitvmstaker/params.proto";
-import "bitvmstaker/bitvmstaker.proto";
-option go_package = "fiamma/x/bitvmstaker/types";
+import "fiamma/bitvmstaker/params.proto";
+import "fiamma/bitvmstaker/bitvmstaker.proto";
+
+option go_package = "github.com/fiamma-chain/fiamma/x/bitvmstaker/types";
+
 // Query defines the gRPC querier service.
 service Query {
   
@@ -27,23 +31,44 @@ service Query {
     option (google.api.http).get = "/fiamma/bitvmstaker/committee_address";
   
   }
+
+  // QueryRegisteredVKListRequest is the request type for the Query/RegisteredVKList RPC method.
+  rpc RegisteredVKList (QueryRegisteredVKListRequest) returns (QueryRegisteredVKListResponse) {
+    option (google.api.http).get = "/fiamma/bitvmstaker/registered_vk_list";
+  
+  }
 }
 // QueryParamsRequest is request type for the Query/Params RPC method.
 message QueryParamsRequest {}
+
 // QueryParamsResponse is response type for the Query/Params RPC method.
 message QueryParamsResponse {
   
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
 }
+
 message QueryAllStakerInfoRequest {
   cosmos.base.query.v1beta1.PageRequest pagination = 1;
 }
+
 message QueryAllStakerInfoResponse {
   repeated fiamma.bitvmstaker.StakerInfo all_staker_info = 1 [(gogoproto.nullable) = false];
   cosmos.base.query.v1beta1.PageResponse pagination      = 2;
 }
+
 message QueryCommitteeAddressRequest {}
+
 message QueryCommitteeAddressResponse {
   string committeeAddress = 1;
 }
+
+message QueryRegisteredVKListRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryRegisteredVKListResponse {
+  repeated bytes registered_vk_list = 1;
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+

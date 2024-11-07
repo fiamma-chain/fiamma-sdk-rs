@@ -1,9 +1,12 @@
 syntax = "proto3";
 package fiamma.bitvmstaker;
+
 import "amino/amino.proto";
 import "gogoproto/gogo.proto";
-import "bitvmstaker/params.proto";
-option go_package = "fiamma/x/bitvmstaker/types";
+import "fiamma/bitvmstaker/params.proto";
+
+option go_package = "github.com/fiamma-chain/fiamma/x/bitvmstaker/types";
+
 // GenesisState defines the bitvmstaker module's genesis state.
 message GenesisState {
   // params defines all the parameters of the module.

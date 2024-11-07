@@ -8,8 +8,6 @@ pub struct Params {}
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct MsgUpdateParams {
     /// authority is the address that controls the module (defaults to x/gov unless overwritten).
-    ///
-    /// params defines the module parameters to update.
     #[prost(string, tag = "1")]
     pub authority: ::prost::alloc::string::String,
     /// NOTE: All parameters must be supplied.
@@ -805,6 +803,24 @@ pub struct QueryCommitteeAddressResponse {
     #[prost(string, tag = "1")]
     pub committee_address: ::prost::alloc::string::String,
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryRegisteredVkListRequest {
+    #[prost(message, optional, tag = "1")]
+    pub pagination: ::core::option::Option<
+        super::super::cosmos::base::query::v1beta1::PageRequest,
+    >,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct QueryRegisteredVkListResponse {
+    #[prost(bytes = "vec", repeated, tag = "1")]
+    pub registered_vk_list: ::prost::alloc::vec::Vec<::prost::alloc::vec::Vec<u8>>,
+    #[prost(message, optional, tag = "2")]
+    pub pagination: ::core::option::Option<
+        super::super::cosmos::base::query::v1beta1::PageResponse,
+    >,
+}
 /// Generated client implementations.
 pub mod query_client {
     #![allow(unused_variables, dead_code, missing_docs, clippy::let_unit_value)]
@@ -969,6 +985,32 @@ pub mod query_client {
                 .insert(GrpcMethod::new("fiamma.bitvmstaker.Query", "CommitteeAddress"));
             self.inner.unary(req, path, codec).await
         }
+        /// QueryRegisteredVKListRequest is the request type for the Query/RegisteredVKList RPC method.
+        pub async fn registered_vk_list(
+            &mut self,
+            request: impl tonic::IntoRequest<super::QueryRegisteredVkListRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryRegisteredVkListResponse>,
+            tonic::Status,
+        > {
+            self.inner
+                .ready()
+                .await
+                .map_err(|e| {
+                    tonic::Status::new(
+                        tonic::Code::Unknown,
+                        format!("Service was not ready: {}", e.into()),
+                    )
+                })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/fiamma.bitvmstaker.Query/RegisteredVKList",
+            );
+            let mut req = request.into_request();
+            req.extensions_mut()
+                .insert(GrpcMethod::new("fiamma.bitvmstaker.Query", "RegisteredVKList"));
+            self.inner.unary(req, path, codec).await
+        }
     }
 }
 /// Generated server implementations.
@@ -1000,6 +1042,14 @@ pub mod query_server {
             request: tonic::Request<super::QueryCommitteeAddressRequest>,
         ) -> std::result::Result<
             tonic::Response<super::QueryCommitteeAddressResponse>,
+            tonic::Status,
+        >;
+        /// QueryRegisteredVKListRequest is the request type for the Query/RegisteredVKList RPC method.
+        async fn registered_vk_list(
+            &self,
+            request: tonic::Request<super::QueryRegisteredVkListRequest>,
+        ) -> std::result::Result<
+            tonic::Response<super::QueryRegisteredVkListResponse>,
             tonic::Status,
         >;
     }
@@ -1204,6 +1254,52 @@ pub mod query_server {
                     let fut = async move {
                         let inner = inner.0;
                         let method = CommitteeAddressSvc(inner);
+                        let codec = tonic::codec::ProstCodec::default();
+                        let mut grpc = tonic::server::Grpc::new(codec)
+                            .apply_compression_config(
+                                accept_compression_encodings,
+                                send_compression_encodings,
+                            )
+                            .apply_max_message_size_config(
+                                max_decoding_message_size,
+                                max_encoding_message_size,
+                            );
+                        let res = grpc.unary(method, req).await;
+                        Ok(res)
+                    };
+                    Box::pin(fut)
+                }
+                "/fiamma.bitvmstaker.Query/RegisteredVKList" => {
+                    #[allow(non_camel_case_types)]
+                    struct RegisteredVKListSvc<T: Query>(pub Arc<T>);
+                    impl<
+                        T: Query,
+                    > tonic::server::UnaryService<super::QueryRegisteredVkListRequest>
+                    for RegisteredVKListSvc<T> {
+                        type Response = super::QueryRegisteredVkListResponse;
+                        type Future = BoxFuture<
+                            tonic::Response<Self::Response>,
+                            tonic::Status,
+                        >;
+                        fn call(
+                            &mut self,
+                            request: tonic::Request<super::QueryRegisteredVkListRequest>,
+                        ) -> Self::Future {
+                            let inner = Arc::clone(&self.0);
+                            let fut = async move {
+                                <T as Query>::registered_vk_list(&inner, request).await
+                            };
+                            Box::pin(fut)
+                        }
+                    }
+                    let accept_compression_encodings = self.accept_compression_encodings;
+                    let send_compression_encodings = self.send_compression_encodings;
+                    let max_decoding_message_size = self.max_decoding_message_size;
+                    let max_encoding_message_size = self.max_encoding_message_size;
+                    let inner = self.inner.clone();
+                    let fut = async move {
+                        let inner = inner.0;
+                        let method = RegisteredVKListSvc(inner);
                         let codec = tonic::codec::ProstCodec::default();
                         let mut grpc = tonic::server::Grpc::new(codec)
                             .apply_compression_config(
